@@ -8,14 +8,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "./components/ui/table"
 import { Input } from "./components/ui/input"
 import { Button } from "./components/ui/button"
 
 import { FaSearch } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
 
 const TABLE_HEADERS: string[] = [
   'Select',
@@ -71,37 +70,6 @@ const parts: any = [
 
 
 function App() {
-
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['parts'],
-    queryFn: async () => {
-      const BASE_URL = "https://shop.euras.com/eed.php";
-      const EED_TOKEN = "UOoLEAQBfex57Q6O";
-
-      const PARAMS = new URLSearchParams({
-        EED: EED_TOKEN,
-        Action: "artikelsuche",
-        suchbg: "samsung washing machine",
-        anzahl: "25",
-        seite: "1",
-        attrib: "1",
-        bigPicture: "1"
-      });
-
-      const url = `${BASE_URL}?${PARAMS}`
-
-      try {
-        const res = await fetch(url)
-        const data = await res.json()
-        console.log(data)
-        return data
-      } catch (err) {
-        console.log(err)
-      }
-    }
-  })
-
-  console.log(data)
 
   return (
     <div className="max-w-[70vw] mx-auto mt-12">
