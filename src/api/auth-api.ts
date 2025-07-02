@@ -1,11 +1,11 @@
-import { type IUser } from "../interfaces/IUser";
+import type { ActionType } from "../context/AuthContext";
 
 const BASE_URL: string = "https://importer-be.onrender.com";
 
 export interface IAuthProps {
   email: string;
   password: string;
-  dispatch: React.Dispatch<IUser>;
+  dispatch: React.Dispatch<ActionType>;
 }
 
 export const userSignup = async (

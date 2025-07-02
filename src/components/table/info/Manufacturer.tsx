@@ -1,4 +1,4 @@
-import type { IInfoProps } from "../../interfaces/IEurasProduct";
+import type { IInfoProps } from "../../../interfaces/IEuras";
 
 export default function Manufacturer({ product }: IInfoProps) {
   return (

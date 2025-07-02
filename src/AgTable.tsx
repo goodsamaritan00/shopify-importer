@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 import { AgGridReact } from "ag-grid-react";
-import { type CellClassParams } from "ag-grid-community";
+import { type CellClassParams, type ValueFormatterParams } from "ag-grid-community";
 import { Input } from "./components/ui/input";
 import "ag-grid-community/styles/ag-theme-material.css";
 
@@ -20,7 +20,6 @@ import { Button } from "./components/ui/button";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -44,11 +43,8 @@ import ImportSelectedButton from "./components/ag grid/ImportSelectedButton";
 import { FaSearch } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 
-import type { IEurasProduct } from "./interfaces/IEuras";
-import type { GridApi } from "ag-grid-community";
 import { useLogout } from "./hooks/useAuth";
 import useAuthContext from "./hooks/useAuthContext";
-import { useNavigate } from "react-router-dom";
 import Loader from "./components/ui/loader";
 
 export default function AgTable() {
@@ -56,14 +52,12 @@ export default function AgTable() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [displayNr, setDisplayNr] = useState("40");
   const [siteNumber, setSiteNumber] = useState<string>("1");
-  const [gridApi, setGridApi] = useState<GridApi | null>(null);
 
   const { user, dispatch } = useAuthContext();
 
   const { eurasProducts, refetchEurasProducts, isFetchingEurasProducts } =
     useEurasProducts(searchQuery, displayNr, siteNumber, user!.token);
 
-  const navigate = useNavigate();
 
   const { logout } = useLogout();
 
@@ -146,7 +140,7 @@ export default function AgTable() {
       headerName: "Price",
       flex: 0.7,
       minWidth: 90,
-      valueFormatter: (p: CellClassParams) => p.value + "€",
+      valueFormatter: (p: ValueFormatterParams) => p.value + "€",
     },
     {
       field: "bestellbar",
@@ -160,7 +154,7 @@ export default function AgTable() {
       headerName: "ETA",
       flex: 0.6,
       minWidth: 50,
-      valueFormatter: (p: CellClassParams) => p.value.toLocaleString() + " days",
+      valueFormatter: (p: ValueFormatterParams) => p.value.toLocaleString() + " days",
     },
     {
       field: "import",
@@ -245,7 +239,6 @@ export default function AgTable() {
         <div className="h-full w-full relative flex-grow min-h-0 overflow-auto">
           <AgGridReact
             rowHeight={60}
-            onGridReady={(params) => setGridApi(params.api)}
             ref={gridRef}
             rowData={eurasProducts?.data || []}
             columnDefs={colDefs}

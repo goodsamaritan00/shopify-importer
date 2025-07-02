@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import AgTable from "./AgTable";
 import { ToastContainer } from "react-toastify";
 
 export default function App() {

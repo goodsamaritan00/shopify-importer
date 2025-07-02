@@ -1,18 +1,12 @@
 import { Button } from "../ui/button";
-import type { IEurasProduct } from "../../interfaces/IEuras";
 import { useShopifyImport } from "../../hooks/useShopify";
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import useAuthContext from "../../hooks/useAuthContext";
 import Loader from "../ui/loader";
 
-import { type CellClassParams } from "ag-grid-community";
 
 
-interface IImportSelectedButtonProps {
-  selectedProducts: IEurasProduct[];
-}
-
-export default function ImportSelectedButton(p) {
+export default function ImportSelectedButton(p: any) {
   const { user } = useAuthContext();
   const { importProducts, isImporting } = useShopifyImport(p.originalnummer);
 

@@ -1,20 +1,18 @@
 import { TableCell, TableRow } from "../ui/table";
-import { IoCheckmarkCircle, IoClose, IoCloseCircle } from "react-icons/io5";
+import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import {
   useImportedProducts,
-  useShopifyImport,
-  useShopifyGraphQl,
 } from "../../hooks/useShopify";
 import type { IEurasProduct } from "../../interfaces/IEuras";
 import ProductInfo from "./info/ProductInfo";
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import {
-  formatIsoDate,
   formatIsoDateAndTime,
 } from "../../utils/formatters/format-iso-date";
 import productImportStatus from "../../utils/product-import-status";
+import useAuthContext from "../../hooks/useAuthContext";
 
 interface ITableItemProps {
   product: IEurasProduct;
@@ -25,12 +23,10 @@ interface ITableItemProps {
 export default function TableItem({
   product,
   setDataToImport,
-  dataToImport,
 }: ITableItemProps) {
-  const [part, setPart] = useState<any>({});
   const [displayInfo, setDisplayInfo] = useState<boolean>(false);
-
-  const { importedProducts } = useImportedProducts();
+  const { user } = useAuthContext()
+  const { importedProducts } = useImportedProducts(user!.token);
 
   const importedProduct = importedProducts.products.filter(
     (importedProduct: any) => {

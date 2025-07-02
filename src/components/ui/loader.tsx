@@ -1,4 +1,4 @@
-import { ClipLoader, MoonLoader } from 'react-spinners'
+import { ClipLoader } from 'react-spinners'
 
 interface ILoaderProps {
   size: number,

@@ -1,4 +1,4 @@
-import type { IEurasProduct } from "../interfaces/IEuras";
+import type { IEurasProduct, IEurasProductsResponse } from "../interfaces/IEuras";
 import cleanProductName from "../utils/formatters/format-euras-product-name";
 
 const BASE_URL: string = "https://importer-be.onrender.com";
@@ -57,7 +57,7 @@ export const fetchEurasProducts = async (
       };
     });
 
-    const final = {
+    const final: IEurasProductsResponse = {
       siteNumbers: data.anzahlseiten,
       total: data.gesamtanzahltreffer,
       data: filterData,

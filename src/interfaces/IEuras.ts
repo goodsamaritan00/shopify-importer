@@ -29,3 +29,9 @@ export interface IEurasProduct {
 export interface IInfoProps {
   product: IEurasProduct;
 }
+
+export interface IEurasProductsResponse {
+  siteNumbers: any;
+  total: number;
+  data: IEurasProduct[] | undefined;
+}

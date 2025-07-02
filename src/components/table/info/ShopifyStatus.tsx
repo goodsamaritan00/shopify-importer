@@ -8,7 +8,6 @@ import {
   useShopifyUpdate,
 } from "../../../hooks/useShopify";
 import {
-  formatIsoDate,
   formatIsoDateAndTime,
 } from "../../../utils/formatters/format-iso-date";
 import formatEurasToShopify from "../../../utils/formatters/format-euras-to-shopify";
@@ -20,7 +19,7 @@ export default function ShopifyStatus({ product }: IProductInfoProps) {
   const SKU: string = product.originalnummer;
 
   const { user } = useAuthContext();
-  const { productGraphQl } = useShopifyGraphQl(SKU);
+  const { productGraphQl } = useShopifyGraphQl(SKU, user!.token);
   const { deleteProduct, isFetchingDelete } = useShopifyDelete(SKU);
   const { importProducts, isImporting } = useShopifyImport(SKU);
   const { updateProduct, isUpdatingProduct } = useShopifyUpdate(SKU);
@@ -75,7 +74,7 @@ export default function ShopifyStatus({ product }: IProductInfoProps) {
               updateProduct({
                 id: formatShopifyProductId(productGraphQl.id),
                 data: formatEurasToShopify(product),
-                token: user,
+                token: user.token,
               });
             }}
           >

@@ -1,5 +1,4 @@
 import { TableCell, TableRow } from "../../ui/table";
-import type { IEurasProduct } from "../../../interfaces/IEuras";
 
 import Overview from "./Overview";
 import Manufacturer from "./Manufacturer";

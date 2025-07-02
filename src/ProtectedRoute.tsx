@@ -1,7 +1,6 @@
 // ProtectedRoute.tsx
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { notifyError } from "./utils/toast-messages";
 
 interface IProtectedRouteProps {
   children: React.ReactNode;

@@ -8,7 +8,7 @@ type StateType = {
   user: IUser | null;
 };
 
-type ActionType = { type: "LOGIN"; payload: IUser } | { type: "LOGOUT" };
+export type ActionType = { type: "LOGIN"; payload: IUser } | { type: "LOGOUT" };
 
 export const AuthContext = createContext<{
   user: IUser | null;

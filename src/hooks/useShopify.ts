@@ -61,7 +61,7 @@ export function useShopifyUpdate(sku: string) {
     error: errorUpdate,
     mutate: updateProduct,
   } = useMutation({
-    mutationFn: (payload: { id: string; data: any; token: string }) =>
+    mutationFn: (payload: { id: string | null; data: any | null; token: string }) =>
       updateShopifyProduct(payload),
     onSuccess: (data) => {
       const product = data.product;
@@ -99,7 +99,7 @@ export function useShopifyDelete(sku: string) {
     error: errorDelete,
     mutate: deleteProduct,
   } = useMutation({
-    mutationFn: (payload: { id: string; token: string }) =>
+    mutationFn: (payload: { id: string | null; token: string }) =>
       deleteShopifyProduct(payload),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["productGraphQl", sku] });

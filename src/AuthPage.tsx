@@ -5,11 +5,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "./components/ui/card";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { useState } from "react";
-import { useLogin, useSignup } from "./hooks/useAuth";
+import { useLogin } from "./hooks/useAuth";
 import useAuthContext from "./hooks/useAuthContext";
 
 import ThreePlogo from "./assets/3plogo.png";
@@ -19,10 +19,7 @@ import AswoLogo from "./assets/aswo-logo.png";
 export default function AuthPage() {
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
-  const [signupEmail, setSignupEmail] = useState<string>("");
-  const [signupPassword, setSignupPassword] = useState<string>("");
 
-  const { handleUserSignup } = useSignup();
   const { handleUserLogin } = useLogin();
 
   const { dispatch } = useAuthContext();
@@ -114,58 +111,6 @@ export default function AuthPage() {
           </div>
         </div>
       </Card>
-      {/* register */}
-      {/* <Card className="w-full max-w-sm mb-24">
-        <CardHeader>
-          <CardTitle className='text-xl'>Register to your account</CardTitle>
-          <CardDescription className='mt-2'>
-            Enter your email and password below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <label htmlFor="email">Email</label>
-                <Input
-                  id="email"
-                  type="email"
-                  onChange={(e) => setSignupEmail(e.target.value)}
-                  placeholder="m@example.com"
-                  required className="border-neutral-300 rounded-sm focus:border-blue-400"
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <label htmlFor="password">Password</label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Request new password
-                  </a>
-                </div>
-                <Input id="password" onChange={(e) => setSignupPassword(e.target.value)} type="password" required className="border-neutral-300 rounded-sm focus:border-blue-400" />
-              </div>
-            </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex-col gap-2">
-          <Button
-            onClick={() =>
-              handleUserSignup({
-                email: signupEmail,
-                password: signupPassword,
-                dispatch: dispatch
-              })
-            }
-            type="submit"
-            className="w-full"
-          >
-            Signup
-          </Button>
-        </CardFooter>
-      </Card> */}
     </div>
   );
 }

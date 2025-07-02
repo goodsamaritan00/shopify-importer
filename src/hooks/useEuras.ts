@@ -1,6 +1,7 @@
 import { fetchEurasProducts } from "../api/euras-api";
 import { useQuery } from "@tanstack/react-query";
 import useAuthContext from "./useAuthContext";
+import type { IEurasProductsResponse } from "../interfaces/IEuras";
 
 export default function useEurasProducts(
   searchQuery: string,
@@ -10,8 +11,14 @@ export default function useEurasProducts(
 ) {
   const { user } = useAuthContext();
 
+  const emptyEurasProducts: IEurasProductsResponse = {
+  siteNumbers: 0,
+  total: 0,
+  data: [],
+};
+
   const {
-    data: eurasProducts = [],
+    data: eurasProducts = emptyEurasProducts,
     isFetching: isFetchingEurasProducts,
     isError: isErrorEurasProducts,
     error: errorEurasProducts,

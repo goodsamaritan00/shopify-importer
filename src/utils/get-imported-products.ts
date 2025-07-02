@@ -1,4 +1,3 @@
-import type { IEurasProduct } from "../interfaces/IEuras";
 
 const GetImportedProducts = (p: any, importedProducts: any) => {
   // Safely handle undefined or null input
