@@ -1,0 +1,12 @@
+FIX SEARCH BUTTON !!! DONE
+
+Fix Import multiple products HALF DONE !!! Importer works, fix rendering
+
+Fix name formatter DONE
+Allow editing names
+add 'manufacturer:' ?
+
+create only 3 accounts that can use importer (maybe add roles?)
+fix backend code - controllers and api calls
+webhook
+create account creator acces based on role?
