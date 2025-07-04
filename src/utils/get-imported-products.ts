@@ -1,4 +1,3 @@
-
 const GetImportedProducts = (p: any, importedProducts: any) => {
   // Safely handle undefined or null input
   if (!importedProducts || !Array.isArray(importedProducts.products)) {

@@ -12,11 +12,14 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="auth" element={<AuthPage />} />
-      <Route index element={
-        <ProtectedRoute>
-          <AgTable />
-        </ProtectedRoute>
-        } />
+      <Route
+        index
+        element={
+          <ProtectedRoute>
+            <AgTable />
+          </ProtectedRoute>
+        }
+      />
     </Route>,
   ),
 );

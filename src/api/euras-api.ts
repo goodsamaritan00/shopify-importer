@@ -1,4 +1,7 @@
-import type { IEurasProduct, IEurasProductsResponse } from "../interfaces/IEuras";
+import type {
+  IEurasProduct,
+  IEurasProductsResponse,
+} from "../interfaces/IEuras";
 import cleanProductName from "../utils/formatters/format-euras-product-name";
 
 const BASE_URL: string = "https://importer-be.onrender.com";
@@ -39,7 +42,7 @@ export const fetchEurasProducts = async (
         ersatzartikel: item.ersatzartikel,
         lieferzeit: item.lieferzeit,
         lieferzeit_in_tagen: item.lieferzeit_in_tagen,
-        picurlbig: item.picurlbig || 'src/assets/no-photo.jpg',
+        picurlbig: item.picurlbig || "src/assets/no-photo.jpg",
         herstelleradresse: {
           hersteller: {
             name: item.herstelleradresse.hersteller.name,

@@ -15,12 +15,13 @@ import useAuthContext from "./hooks/useAuthContext";
 import ThreePlogo from "./assets/3plogo.png";
 import ShopifyLogo from "./assets/shopify-logo.png";
 import AswoLogo from "./assets/aswo-logo.png";
+import Loader from "./components/ui/loader";
 
 export default function AuthPage() {
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
-  const { handleUserLogin } = useLogin();
+  const { handleUserLogin, isLoggingUser } = useLogin();
 
   const { dispatch } = useAuthContext();
 
@@ -84,13 +85,11 @@ export default function AuthPage() {
             }}
             type="submit"
             className="w-full"
+            disabled={isLoggingUser}
           >
-            Login
+            {isLoggingUser ? <Loader color="#ffff" size={18} /> : "Log in"}
           </Button>
         </CardFooter>
-        <Button variant="ghost" size="sm">
-          Request Account
-        </Button>
         <div className="flex items-center justify-center gap-4">
           <div className="h-[50px] w-[100px] flex items-center justify-center">
             <img

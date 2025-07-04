@@ -7,9 +7,7 @@ import {
   useShopifyGraphQl,
   useShopifyUpdate,
 } from "../../../hooks/useShopify";
-import {
-  formatIsoDateAndTime,
-} from "../../../utils/formatters/format-iso-date";
+import { formatIsoDateAndTime } from "../../../utils/formatters/format-iso-date";
 import formatEurasToShopify from "../../../utils/formatters/format-euras-to-shopify";
 import { Button } from "../../ui/button";
 import formatShopifyProductId from "../../../utils/formatters/format-shopify-product-id";

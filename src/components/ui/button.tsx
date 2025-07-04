@@ -9,8 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-white border rounded-full border-blue-300 ",
+        default: "bg-primary text-white border rounded-full border-blue-300 ",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
@@ -19,8 +18,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost: "",
         link: "text-primary underline-offset-4 hover:underline",
-        table: ' rounded-md border-blue-300 text-blue-500 shadow-xs',
-        danger: '  rounded-md text-red-400 shadow-xs '
+        table: " rounded-md border-blue-300 text-blue-500 shadow-xs",
+        danger: "  rounded-md text-red-400 shadow-xs ",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

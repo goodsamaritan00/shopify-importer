@@ -4,8 +4,6 @@ import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify
 import useAuthContext from "../../hooks/useAuthContext";
 import Loader from "../ui/loader";
 
-
-
 export default function ImportSelectedButton(p: any) {
   const { user } = useAuthContext();
   const { importProducts, isImporting } = useShopifyImport(p.originalnummer);

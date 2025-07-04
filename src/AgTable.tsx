@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 
 import { AgGridReact } from "ag-grid-react";
-import { type CellClassParams, type ValueFormatterParams } from "ag-grid-community";
+import {
+  type CellClassParams,
+  type ValueFormatterParams,
+} from "ag-grid-community";
 import { Input } from "./components/ui/input";
 import "ag-grid-community/styles/ag-theme-material.css";
 
@@ -48,16 +51,15 @@ import useAuthContext from "./hooks/useAuthContext";
 import Loader from "./components/ui/loader";
 
 export default function AgTable() {
-  const [searchInput, setSearchInput] = useState<string>('')
+  const [searchInput, setSearchInput] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [displayNr, setDisplayNr] = useState("40");
   const [siteNumber, setSiteNumber] = useState<string>("1");
 
   const { user, dispatch } = useAuthContext();
 
-  const { eurasProducts, refetchEurasProducts, isFetchingEurasProducts } =
+  const { eurasProducts, isFetchingEurasProducts } =
     useEurasProducts(searchQuery, displayNr, siteNumber, user!.token);
-
 
   const { logout } = useLogout();
 
@@ -121,7 +123,6 @@ export default function AgTable() {
       headerName: "SKU",
       flex: 0.5,
       minWidth: 100,
-
     },
     {
       field: "originalnummer",
@@ -154,7 +155,8 @@ export default function AgTable() {
       headerName: "ETA",
       flex: 0.6,
       minWidth: 50,
-      valueFormatter: (p: ValueFormatterParams) => p.value.toLocaleString() + " days",
+      valueFormatter: (p: ValueFormatterParams) =>
+        p.value.toLocaleString() + " days",
     },
     {
       field: "import",
@@ -184,56 +186,57 @@ export default function AgTable() {
           Importer
         </h2>
         {/* search input */}
-       <div className="flex items-center gap-4">
-       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSearchQuery(searchInput)
-          setSiteNumber("1");
-          refetchEurasProducts();
-        }}
-        className="w-[500px] relative group"
-      >
-        <Input
-          onChange={(e) => setSearchInput(e.target.value)}
-          placeholder='Search product name, SKU or OEM...'
-          className="border-neutral-200 text-neutral-500 rounded-full focus:border-neutral-400"
-        />
-        <Button
-          type="submit"
-          variant="ghost"
-          className="absolute top-0 right-0 h-full"
-        >
-          <FaSearch className="text-neutral-300 transition duration-500 group-focus-within:text-neutral-400" />
-        </Button>
-      </form>
+        <div className="flex items-center gap-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSearchQuery(searchInput);
+              setSiteNumber("1");
+            }}
+            className="w-[500px] relative group"
+          >
+            <Input
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Search product name, SKU or OEM..."
+              className="border-neutral-200 text-neutral-500 rounded-full focus:border-neutral-400"
+            />
+            <Button
+              type="submit"
+              variant="ghost"
+              className="absolute top-0 right-0 h-full"
+            >
+              <FaSearch className="text-neutral-300 transition duration-500 group-focus-within:text-neutral-400" />
+            </Button>
+          </form>
 
-        {/* nav menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger className="hover:bg-white/20 rounded-md py-1 px-2 flex items-center gap-2">
-            <IoMenu className="text-3xl" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>
-              Welcome, {user ? user.email : "User"}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Search Products</DropdownMenuItem>
-            <DropdownMenuItem>Imported Products</DropdownMenuItem>
-            <DropdownMenuItem>Graph</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logout(dispatch)}>
-              Log Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-       </div>
+          {/* nav menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="hover:bg-white/20 rounded-md py-1 px-2 flex items-center gap-2">
+              <IoMenu className="text-3xl" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>
+                Welcome, {user ? user.email : "User"}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Search Products</DropdownMenuItem>
+              <DropdownMenuItem>Imported Products</DropdownMenuItem>
+              <DropdownMenuItem>Graph</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => logout(dispatch)}>
+                Log Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       {/* product table */}
       {isFetchingEurasProducts ? (
         <div className="w-full h-full  bg-white flex items-center justify-center flex-col gap-4">
-          <Loader size={46} color='oklch(70.7% 0.165 254.624)' />
-          <span className="font-semibold">Fetching products, please wait...</span>
+          <Loader size={46} color="oklch(70.7% 0.165 254.624)" />
+          <span className="font-semibold">
+            Fetching products, please wait...
+          </span>
         </div>
       ) : (
         <div className="h-full w-full relative flex-grow min-h-0 overflow-auto">
@@ -251,12 +254,14 @@ export default function AgTable() {
       <div className="bg-white py-1 flex items-center border justify-between gap-8 px-18">
         <div className="text-sm flex items-center gap-2">
           <span>Total Results:</span>
-          <span className="font-bold text-neutral-700">{eurasProducts.total}</span>
+          <span className="font-bold text-neutral-700">
+            {eurasProducts.total}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-neutral-500">Show</span>
           <Select
-            defaultValue="10"
+            defaultValue={displayNr}
             onValueChange={(value) => {
               setDisplayNr(value);
             }}
@@ -265,61 +270,73 @@ export default function AgTable() {
             <SelectTrigger>
               <SelectValue placeholder="10" />
             </SelectTrigger>
-            <SelectContent >
-              <SelectItem  className="font-bold text-neutral-700" value="10">10</SelectItem>
-              <SelectItem  className="font-bold text-neutral-700" value="20">20</SelectItem>
-              <SelectItem  className="font-bold text-neutral-700" value="30">30</SelectItem>
-              <SelectItem className="font-bold text-neutral-700"  value="40">40</SelectItem>
-              <SelectItem className="font-bold text-neutral-700"  value="50">50</SelectItem>
+            <SelectContent>
+              <SelectItem className="font-bold text-neutral-700" value="10">
+                10
+              </SelectItem>
+              <SelectItem className="font-bold text-neutral-700" value="20">
+                20
+              </SelectItem>
+              <SelectItem className="font-bold text-neutral-700" value="30">
+                30
+              </SelectItem>
+              <SelectItem className="font-bold text-neutral-700" value="40">
+                40
+              </SelectItem>
+              <SelectItem className="font-bold text-neutral-700" value="50">
+                50
+              </SelectItem>
             </SelectContent>
           </Select>
           <span className="text-sm text-neutral-500">per page</span>
         </div>
         <Pagination>
-  <PaginationContent>
-    <PaginationItem>
-      <PaginationPrevious
-        onClick={() => {
-          setSiteNumber((prev) => {
-            const prevNum = Number(prev);
-            return prevNum > 1 ? String(prevNum - 1) : prev;
-          });
-        }}
-      />
-    </PaginationItem>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => {
+                  setSiteNumber((prev) => {
+                    const prevNum = Number(prev);
+                    return prevNum > 1 ? String(prevNum - 1) : prev;
+                  });
+                }}
+              />
+            </PaginationItem>
 
-    {[...Array(eurasProducts.siteNumbers)].map((_, index) => {
-      const site = index + 1;
-      return (
-        <PaginationItem
-          key={site}
-          data-page={site}
-          onClick={(e) => {
-            const page = (e.currentTarget as HTMLElement).dataset.page;
-            if (page) {
-              setSiteNumber(page);
-            }
-          }}
-        >
-          <PaginationLink isActive={site.toString() === siteNumber}>
-            {site}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    })}
+            {[...Array(eurasProducts.siteNumbers)].map((_, index) => {
+              const site = index + 1;
+              return (
+                <PaginationItem
+                  key={site}
+                  data-page={site}
+                  onClick={(e) => {
+                    const page = (e.currentTarget as HTMLElement).dataset.page;
+                    if (page) {
+                      setSiteNumber(page);
+                    }
+                  }}
+                >
+                  <PaginationLink isActive={site.toString() === siteNumber}>
+                    {site}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
 
-    <PaginationItem>
-      <PaginationNext
-        onClick={() => {
-          setSiteNumber((prev) => {
-            const prevNum = Number(prev);
-            return prevNum < eurasProducts.siteNumbers ? String(prevNum + 1) : prev;
-          });
-        }}
-      />
-    </PaginationItem>
-  </PaginationContent>
-</Pagination>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => {
+                  setSiteNumber((prev) => {
+                    const prevNum = Number(prev);
+                    return prevNum < eurasProducts.siteNumbers
+                      ? String(prevNum + 1)
+                      : prev;
+                  });
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );

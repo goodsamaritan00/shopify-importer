@@ -1,12 +1,10 @@
-import { ClipLoader } from 'react-spinners'
+import { ClipLoader } from "react-spinners";
 
 interface ILoaderProps {
-  size: number,
-  color: string
+  size: number;
+  color: string;
 }
 
 export default function Loader({ size, color }: ILoaderProps) {
-  return (
-    <ClipLoader size={size} color={color} />
-  )
+  return <ClipLoader size={size} color={color} />;
 }

@@ -12,10 +12,10 @@ export default function useEurasProducts(
   const { user } = useAuthContext();
 
   const emptyEurasProducts: IEurasProductsResponse = {
-  siteNumbers: 0,
-  total: 0,
-  data: [],
-};
+    siteNumbers: 0,
+    total: 0,
+    data: [],
+  };
 
   const {
     data: eurasProducts = emptyEurasProducts,
@@ -25,7 +25,7 @@ export default function useEurasProducts(
     refetch: refetchEurasProducts,
   } = useQuery({
     staleTime: 5 * 60 * 1000,
-    queryKey: ["eurasProducts", displayNr, siteQuery, searchQuery],
+    queryKey: ["eurasProducts", displayNr, siteQuery, searchQuery, token],
     queryFn: () => {
       if (!user) throw new Error("User error, please sign in and try again.");
       return fetchEurasProducts(searchQuery, displayNr, siteQuery, token);

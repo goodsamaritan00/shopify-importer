@@ -27,7 +27,10 @@ function PaginationContent({
   return (
     <ul
       data-slot="pagination-content"
-      className={cn("flex flex-row items-center gap-1 cursor-pointer", className)}
+      className={cn(
+        "flex flex-row items-center gap-1 cursor-pointer",
+        className,
+      )}
       {...props}
     />
   );

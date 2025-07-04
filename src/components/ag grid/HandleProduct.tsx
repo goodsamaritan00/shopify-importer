@@ -19,7 +19,6 @@ import Loader from "../ui/loader";
 
 import { type CellClassParams } from "ag-grid-community";
 
-
 export default function HandleProduct(p: CellClassParams) {
   const { user } = useAuthContext();
 
@@ -28,7 +27,9 @@ export default function HandleProduct(p: CellClassParams) {
   }
 
   const { importedProducts } = useImportedProducts(user.token);
-  const { importProducts, isImporting } = useShopifyImport(p.data.originalnummer);
+  const { importProducts, isImporting } = useShopifyImport(
+    p.data.originalnummer,
+  );
   const { updateProduct, isUpdatingProduct } = useShopifyUpdate(
     p.data.originalnummer,
   );
@@ -42,8 +43,9 @@ export default function HandleProduct(p: CellClassParams) {
   return (
     <div className="flex items-center justify-center w-full">
       {!isImported ? (
-        <Button className="text-xl" variant='table'
-      
+        <Button
+          className="text-xl"
+          variant="table"
           onClick={() =>
             importProducts({
               data: formatEurasToShopify(p.data),
@@ -51,11 +53,15 @@ export default function HandleProduct(p: CellClassParams) {
             })
           }
         >
-          {isImporting ? <Loader color="oklch(62.3% 0.214 259.815)" size={18} /> : <HiMiniArrowDownTray className="size-5" />}
+          {isImporting ? (
+            <Loader color="oklch(62.3% 0.214 259.815)" size={18} />
+          ) : (
+            <HiMiniArrowDownTray className="size-5" />
+          )}
         </Button>
       ) : (
-        <Button variant='table'
-          
+        <Button
+          variant="table"
           onClick={() =>
             updateProduct({
               id: importedProduct.id,
@@ -71,11 +77,11 @@ export default function HandleProduct(p: CellClassParams) {
           )}
         </Button>
       )}
-      <Button variant='table' disabled >
+      <Button variant="table" disabled>
         <FaInfo className="size-5" />
       </Button>
       <Button
-        variant='danger'
+        variant="danger"
         disabled={!isImported ? true : false}
         onClick={() =>
           deleteProduct({
