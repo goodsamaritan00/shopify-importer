@@ -1,4 +1,4 @@
-const BASE_URL: string = "http://localhost:5000";
+const BASE_URL: string = "https://importer-be.onrender.com";
 
 const authHeaders = (token: string) => {
   const AUTH_HEADERS: HeadersInit = {
