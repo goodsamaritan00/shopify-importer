@@ -24,6 +24,7 @@ export interface IEurasProduct {
       internet: string;
     };
   };
+  thumbnailurl: string;
 }
 
 export interface IInfoProps {

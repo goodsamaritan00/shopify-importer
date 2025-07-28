@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   type CellClassParams,
+  type IRowModel,
   type ValueFormatterParams,
 } from "ag-grid-community";
 import { Input } from "./components/ui/input";
@@ -88,7 +89,7 @@ export default function AgTable() {
       cellRenderer: HandleProduct,
     },
     {
-      field: "picurlbig",
+      field: "thumbnailurl",
       headerName: "Image",
       flex: 1,
       minWidth: 80,
@@ -105,7 +106,7 @@ export default function AgTable() {
         >
           <img
             className="border border-neutral-400 h-[40px] rounded-md w-[40px] object-cover"
-            src={p.data.picurlbig}
+            src={p.data.thumbnailurl}
             alt="Product"
           />
         </div>
@@ -133,6 +134,12 @@ export default function AgTable() {
     {
       field: "artikelhersteller",
       headerName: "Manufacturer",
+      flex: 1,
+      minWidth: 120,
+    },
+    {
+      field: "vgruppenname",
+      headerName: "Category",
       flex: 1,
       minWidth: 120,
     },
@@ -248,6 +255,17 @@ export default function AgTable() {
             defaultColDef={defaultColDef}
             suppressRowClickSelection={true}
             rowSelection="multiple"
+            onCellDoubleClicked={(p: ValueFormatterParams) => {
+              if (p.colDef.field === 'vgruppenname') {
+                gridRef.current?.api.deselectAll()
+
+                 gridRef.current?.api.forEachNode((node: any) => {
+                  if (node.data.vgruppenname === p.data.vgruppenname) {
+                    node.setSelected(true)
+                  }
+                 })
+              }
+            }}
           />
         </div>
       )}

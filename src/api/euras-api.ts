@@ -4,7 +4,7 @@ import type {
 } from "../interfaces/IEuras";
 import cleanProductName from "../utils/formatters/format-euras-product-name";
 
-const BASE_URL: string = "https://importer-be.onrender.com";
+const BASE_URL: string = "http://localhost:5000";
 
 export const fetchEurasProducts = async (
   searchQuery: string,
@@ -57,6 +57,7 @@ export const fetchEurasProducts = async (
             internet: item.herstelleradresse.importeur.internet,
           },
         },
+        thumbnailurl: item.thumbnailurl
       };
     });
 

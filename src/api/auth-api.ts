@@ -1,6 +1,6 @@
 import type { ActionType } from "../context/AuthContext";
 
-const BASE_URL: string = "https://importer-be.onrender.com";
+const BASE_URL: string = "http://localhost:5000";
 
 export interface IAuthProps {
   email: string;
