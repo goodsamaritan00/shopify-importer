@@ -4,7 +4,7 @@ import type {
 } from "../interfaces/IEuras";
 import cleanProductName from "../utils/formatters/format-euras-product-name";
 
-const BASE_URL: string = "http://localhost:5000";
+const BASE_URL: string = "https://importer-be.onrender.com";
 
 export const fetchEurasProducts = async (
   searchQuery: string,
