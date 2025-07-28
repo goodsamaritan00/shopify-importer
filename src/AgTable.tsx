@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   type CellClassParams,
-  type IRowModel,
   type ValueFormatterParams,
 } from "ag-grid-community";
 import { Input } from "./components/ui/input";
