@@ -3,7 +3,6 @@ import type {
   IEurasProductsResponse,
 } from "../interfaces/IEuras";
 import extractProductData from "../utils/extract-euras-product";
-import cleanProductName from "../utils/formatters/format-euras-product-name";
 
 const BASE_URL: string = "https://importer-be.onrender.com";
 
