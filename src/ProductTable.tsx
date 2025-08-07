@@ -11,7 +11,6 @@ import "ag-grid-community/styles/ag-theme-material.css";
 
 import {
   useEurasProducts,
-  useEurasProductsByAppliances,
 } from "./hooks/useEuras";
 
 import {

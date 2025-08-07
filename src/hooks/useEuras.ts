@@ -6,7 +6,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import useAuthContext from "./useAuthContext";
 import type { IEurasProductsResponse } from "../interfaces/IEuras";
-import useProductTableContext from "./useProductTableContext";
 
 export function useEurasProducts(
   searchQuery: string,

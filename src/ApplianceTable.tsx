@@ -1,7 +1,6 @@
 import { AgGridReact } from "ag-grid-react";
 import {
   type RowDoubleClickedEvent,
-  type ValueFormatterParams,
 } from "ag-grid-community";
 import { useEffect, useRef, useState } from "react";
 import useAuthContext from "./hooks/useAuthContext";
@@ -12,13 +11,13 @@ import {
 import useProductTableContext from "./hooks/useProductTableContext";
 
 export default function ApplianceTable({ searchQuery }: any) {
-  const { rowData, setRowData } = useProductTableContext();
+  const { setRowData } = useProductTableContext();
 
-  const [anzahl, setAnzahl] = useState("10");
-  const [site, setSite] = useState<string>("1");
+  const [anzahl] = useState("10");
+  const [site] = useState<string>("1");
   const [geraeteid, setGeraeteid] = useState<string>("");
 
-  const { user, dispatch } = useAuthContext();
+  const { user } = useAuthContext();
 
   const { eurasAppliances } = useEurasAppliances(
     searchQuery,
