@@ -1,6 +1,6 @@
 import { AgGridReact } from "ag-grid-react";
 import {
-  type CellClassParams,
+  type RowDoubleClickedEvent,
   type ValueFormatterParams,
 } from "ag-grid-community";
 import { useEffect, useRef, useState } from "react";
@@ -47,7 +47,7 @@ export default function ApplianceTable({ searchQuery }: any) {
     cellStyle: { display: "flex", alignItems: "center" },
   };
 
-  const [colDefs] = useState([
+  const [colDefs] = useState<any>([
     {
       field: "geraetename",
       headerName: "Device Name",
@@ -94,7 +94,7 @@ export default function ApplianceTable({ searchQuery }: any) {
         rowData={eurasAppliances}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        onRowDoubleClicked={(p: ValueFormatterParams) => {
+        onRowDoubleClicked={(p: RowDoubleClickedEvent) => {
           setGeraeteid(p.data.geraeteid);
         }}
         // suppressRowClickSelection={true}
