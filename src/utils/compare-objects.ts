@@ -1,16 +1,24 @@
 function compareObjects(obj1: any, obj2: any) {
-  if (
-    obj1.title === obj2.title &&
-    obj1.body_html === obj2.body_html &&
-    obj1.product_type === obj2.product_type &&
-    obj1.variants?.[0]?.sku === obj2.variants?.[0]?.sku &&
-    obj1.variants?.[0]?.price.replace(",", ".") ===
-      obj2.variants?.[0]?.price.replace(",", ".")
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  console.log('Objects', obj1, obj2);
+
+  const variant1 = obj1.variants?.[0];
+  const variant2 = obj2.variants?.[0];
+
+  // Safely normalize the price
+  const normalizePrice = (price: any) => {
+    if (typeof price === 'number') return price;
+    if (typeof price === 'string') {
+      return parseFloat(price.replace(',', '.').replace(/[^\d.]/g, ''));
+    }
+    return NaN;
+  };
+
+  const productTypeMatch = obj1.product_type === obj2.product_type;
+  const skuMatch = variant1?.sku === variant2?.sku;
+  const priceMatch =
+    normalizePrice(variant1?.price) === normalizePrice(variant2?.price);
+
+  return productTypeMatch && skuMatch && priceMatch;
 }
 
 export default compareObjects;

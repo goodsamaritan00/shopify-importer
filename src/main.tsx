@@ -5,6 +5,7 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { RouterProvider } from "react-router-dom";
 import router from "./Router";
 import { AuthContextProvider } from "./context/AuthContext";
+import { ProductTableProvider } from "./context/AgGridContext";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -13,7 +14,9 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <ProductTableProvider>
+        <RouterProvider router={router} />
+      </ProductTableProvider>
     </AuthContextProvider>
   </QueryClientProvider>,
 );

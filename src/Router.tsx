@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import AuthPage from "./AuthPage";
-import AgTable from "./AgTable";
+import ProductTable from "./ProductTable";
 import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter(
@@ -16,7 +16,7 @@ const router = createBrowserRouter(
         index
         element={
           <ProtectedRoute>
-            <AgTable />
+            <ProductTable />
           </ProtectedRoute>
         }
       />

@@ -2,6 +2,7 @@ import type {
   IEurasProduct,
   IEurasProductsResponse,
 } from "../interfaces/IEuras";
+import extractProductData from "../utils/extract-euras-product";
 import cleanProductName from "../utils/formatters/format-euras-product-name";
 
 const BASE_URL: string = "https://importer-be.onrender.com";
@@ -13,9 +14,13 @@ export const fetchEurasProducts = async (
   token: string,
 ) => {
   try {
-    const query = encodeURIComponent(searchQuery);
+    const params = new URLSearchParams({
+      seite: siteQuery,
+      suchbg: searchQuery,
+      anzahl: anzahl,
+    });
 
-    const URL: string = `${BASE_URL}/routes/eurasProductSearch?suchbg=${query}&anzahl=${anzahl}&seite=${String(Number(siteQuery))}`;
+    const URL: string = `${BASE_URL}/routes/eurasProductSearch?${params.toString()}`;
     const AUTH_HEADERS: HeadersInit = {
       "Content-type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -27,38 +32,7 @@ export const fetchEurasProducts = async (
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]
     ).map((item: IEurasProduct) => {
-      return {
-        artikelnummer: item.artikelnummer,
-        originalnummer: item.originalnummer,
-        artikelbezeichnung: cleanProductName(
-          item.artikelbezeichnung,
-          item.artikelnummer,
-          item.originalnummer,
-        ),
-        artikelhersteller: item.artikelhersteller,
-        vgruppenname: item.vgruppenname,
-        ekpreis: item.ekpreis,
-        bestellbar: item.bestellbar,
-        ersatzartikel: item.ersatzartikel,
-        lieferzeit: item.lieferzeit,
-        lieferzeit_in_tagen: item.lieferzeit_in_tagen,
-        picurlbig: item.picurlbig || "src/assets/no-photo.jpg",
-        herstelleradresse: {
-          hersteller: {
-            name: item.herstelleradresse.hersteller.name,
-            land: item.herstelleradresse.hersteller.land,
-            email: item.herstelleradresse.hersteller.email,
-            internet: item.herstelleradresse.hersteller.internet,
-          },
-          importeur: {
-            name: item.herstelleradresse.importeur.name,
-            land: item.herstelleradresse.importeur.land,
-            email: item.herstelleradresse.importeur.email,
-            internet: item.herstelleradresse.importeur.internet,
-          },
-        },
-        thumbnailurl: item.thumbnailurl
-      };
+      return extractProductData(item);
     });
 
     const final: IEurasProductsResponse = {
@@ -68,6 +42,74 @@ export const fetchEurasProducts = async (
     };
 
     return final;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchEurasAppliances = async (
+  searchQuery: string,
+  anzahl: string,
+  siteQuery: string,
+  token: string,
+) => {
+  try {
+    const params = new URLSearchParams({
+      seite: siteQuery,
+      suchbg: searchQuery,
+      anzahl: anzahl,
+    });
+
+    const URL: string = `${BASE_URL}/routes/eurasAppliancesSearch?${params.toString()}`;
+    const AUTH_HEADERS: HeadersInit = {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    const res = await fetch(URL, { headers: AUTH_HEADERS });
+    const data = await res.json();
+
+    const final = Object.values(data.treffer);
+
+    console.log("Appliances", final);
+
+    return final;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchEurasProductsByAppliances = async (
+  searchQuery: string,
+  geraeteid: string,
+  seite: string,
+  token: string,
+) => {
+  try {
+    const params = new URLSearchParams({
+      seite: seite,
+      suchbg: searchQuery,
+      geraeteid: geraeteid,
+    });
+    console.log(params.toString());
+    const URL: string = `${BASE_URL}/routes/eurasProductsByAppliances?${params.toString().replace(/\+/g, "%")}`;
+    const AUTH_HEADERS: HeadersInit = {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    const res = await fetch(URL, { headers: AUTH_HEADERS });
+    const data = await res.json();
+    console.log("PRODUCTS BY APPLIANCES", data);
+    const filterData: IEurasProduct[] = (
+      Object.values(data.treffer) as IEurasProduct[]
+    ).map((item: IEurasProduct) => {
+      return extractProductData(item);
+    });
+
+    console.log("PRODUCTS BY APPLIANCES HEHEHE", filterData);
+
+    return filterData;
   } catch (error) {
     console.log(error);
   }

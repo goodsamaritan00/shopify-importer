@@ -22,7 +22,6 @@
 
 // export default function TablePagniation() {
 
-
 //   return (
 //     <div className="bg-white py-1 flex items-center border justify-between gap-8 px-18">
 //         <div className="text-sm flex items-center gap-2">

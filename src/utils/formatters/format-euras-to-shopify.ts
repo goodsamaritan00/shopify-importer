@@ -19,7 +19,11 @@ const formatEurasToShopify = (product: IEurasProduct) => {
             src: product.picurlbig,
           },
         ]
-      : [],
+      : [
+          {
+            src: "https://i.postimg.cc/Zq5jwGFg/no-photo.jpg",
+          },
+        ],
     tags: [
       product.artikelnummer,
       product.ersatzartikel,
