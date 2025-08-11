@@ -1,5 +1,5 @@
 function compareObjects(obj1: any, obj2: any) {
-  console.log('Objects', obj1, obj2);
+  
 
   const variant1 = obj1.variants?.[0];
   const variant2 = obj2.variants?.[0];

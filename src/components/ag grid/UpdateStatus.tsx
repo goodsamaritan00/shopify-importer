@@ -1,17 +1,19 @@
-import { useImportedProducts } from "../../hooks/useShopify";
+import { type RowClassParams } from 'ag-grid-community'
 
-import GetImportedProducts from "../../utils/get-imported-products";
+import { useImportedProducts } from "../../hooks/useShopify";
+import getImportedProducts from "../../utils/get-imported-products";
 import { formatIsoDateAndTime } from "../../utils/formatters/format-iso-date";
 import compareObjects from "../../utils/compare-objects";
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import Status from "./Status";
 import useAuthContext from "../../hooks/useAuthContext";
 
-export default function ImportStatus(p: any) {
+export default function UpdateStatus(p: RowClassParams) {
+
   const { user } = useAuthContext();
   const { importedProducts } = useImportedProducts(user!.token);
 
-  const importedProduct = GetImportedProducts(p, importedProducts);
+  const importedProduct = getImportedProducts(p, importedProducts);
 
   return (
     <div className=" w-full h-full flex items-center ">

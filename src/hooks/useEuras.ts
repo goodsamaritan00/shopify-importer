@@ -9,8 +9,8 @@ import type { IEurasProductsResponse } from "../interfaces/IEuras";
 
 export function useEurasProducts(
   searchQuery: string,
-  displayNr: string,
-  siteQuery: string,
+  displayNumber: string,
+  siteNumber: string,
   token: string,
 ) {
   const { user } = useAuthContext();
@@ -30,11 +30,12 @@ export function useEurasProducts(
     refetch: refetchEurasProducts,
   } = useQuery({
     staleTime: 5 * 60 * 1000,
-    queryKey: ["eurasProducts", displayNr, siteQuery, searchQuery, token],
+    queryKey: ["eurasProducts", displayNumber, siteNumber, searchQuery, token],
     queryFn: () => {
       if (!user) throw new Error("User error, please sign in and try again.");
-      return fetchEurasProducts(searchQuery, displayNr, siteQuery, token);
+      return fetchEurasProducts(searchQuery, displayNumber, siteNumber, token);
     },
+    enabled: !!searchQuery
   });
 
   return {
@@ -80,7 +81,7 @@ export function useEurasAppliances(
 }
 
 export function useEurasProductsByAppliances(
-  searchQuery: string,
+  devicesQuery: string,
   geraeteid: string,
   seite: string,
   token: string,
@@ -98,20 +99,21 @@ export function useEurasProductsByAppliances(
     staleTime: 5 * 60 * 1000,
     queryKey: [
       "eurasProductsByAppliances",
-      searchQuery,
-      geraeteid,
+      devicesQuery,
       seite,
       token,
+      geraeteid
     ],
     queryFn: () => {
       if (!user) throw new Error("User error, please sign in and try again.");
       return fetchEurasProductsByAppliances(
-        searchQuery,
+        devicesQuery,
         geraeteid,
         seite,
         token,
       );
     },
+    enabled: !!geraeteid
   });
 
   return {

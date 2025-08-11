@@ -1,4 +1,4 @@
-const GetImportedProducts = (p: any, importedProducts: any) => {
+const getImportedProducts = (p: any, importedProducts: any) => {
   // Safely handle undefined or null input
   if (!importedProducts || !Array.isArray(importedProducts.products)) {
     return null;
@@ -11,4 +11,4 @@ const GetImportedProducts = (p: any, importedProducts: any) => {
   return imported || null;
 };
 
-export default GetImportedProducts;
+export default getImportedProducts;

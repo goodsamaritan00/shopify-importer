@@ -1,9 +1,13 @@
-import { useImportedProducts } from "../../hooks/useShopify";
+import { type CellClassParams } from "ag-grid-community";
+
 import productImportStatus from "../../utils/product-import-status";
 import Status from "./Status";
-import useAuthContext from "../../hooks/useAuthContext";
 
-export default function ImportStatus(p: any) {
+import useAuthContext from "../../hooks/useAuthContext";
+import { useImportedProducts } from "../../hooks/useShopify";
+
+
+export default function ImportStatus(p: CellClassParams) {
   const { user } = useAuthContext();
   const { importedProducts } = useImportedProducts(user!.token);
 

@@ -1,6 +1,5 @@
-// tanstack query
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// api
+
 import {
   deleteShopifyProduct,
   importShopifyProduct,
@@ -8,12 +7,10 @@ import {
   updateShopifyProduct,
   fetchImportedProducts,
 } from "../api/shopify-api";
-// interfaces
-//
-// // utils
+
 import { notifyError, notifySuccess } from "../utils/toast-messages";
 
-export function useShopifyImport(sku: string) {
+export function useShopifyImport() {
   const queryClient = useQueryClient();
 
   const {
@@ -24,21 +21,23 @@ export function useShopifyImport(sku: string) {
     error: errorImport,
     mutate: importProducts,
   } = useMutation({
-    mutationFn: (payload: { data: any; token: string }) =>
-      importShopifyProduct(payload),
+    mutationFn: (payload: { data: any; token: string }) => importShopifyProduct(payload),
     onSuccess: (data) => {
       const product = data.product;
-      queryClient.setQueryData(["productGraphQl", sku], {
+
+      queryClient.setQueryData(["productGraphQl", product.sku], {
         id: String(product.id),
         createdAt: product.created_at,
         updatedAt: product.updated_at,
       });
-      queryClient.invalidateQueries({ queryKey: ["productGraphQl", sku] });
+      queryClient.invalidateQueries({ queryKey: ["productGraphQl", product.sku] });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
+
       notifySuccess("Product imported to Shopify!");
     },
     onError: (error) => {
-      notifyError(`Product import failed: ${error.message}`);
+      const message = error instanceof Error ? error.message : 'Unknown Error'
+      notifyError(`Product import failed: ${message}`);
     },
   });
 
@@ -48,11 +47,11 @@ export function useShopifyImport(sku: string) {
     isErrorImport,
     errorImport,
     isSuccessImport,
-    importProducts,
+    importProducts
   };
 }
 
-export function useShopifyUpdate(sku: string) {
+export function useShopifyUpdate() {
   const queryClient = useQueryClient();
 
   const {
@@ -69,18 +68,18 @@ export function useShopifyUpdate(sku: string) {
     onSuccess: (data) => {
       const product = data.product;
 
-      queryClient.setQueryData(["productGraphQl", sku], {
+      queryClient.setQueryData(["productGraphQl"], {
         id: String(product.id),
         createdAt: product.created_at,
         updatedAt: product.updated_at,
       });
-      queryClient.invalidateQueries({ queryKey: ["productGraphQl", sku] });
+      queryClient.invalidateQueries({ queryKey: ["productGraphQl"] });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
 
       notifySuccess("Product updated!");
     },
     onError: (error) => {
-      console.log(error);
+      
       notifyError(`Product update failed: ${error.message}`);
     },
   });
@@ -89,11 +88,11 @@ export function useShopifyUpdate(sku: string) {
     isUpdatingProduct,
     isErrorUpdate,
     errorUpdate,
-    updateProduct,
+    updateProduct
   };
 }
 
-export function useShopifyDelete(sku: string) {
+export function useShopifyDelete() {
   const queryClient = useQueryClient();
 
   const {
@@ -105,13 +104,13 @@ export function useShopifyDelete(sku: string) {
     mutationFn: (payload: { id: string | null; token: string }) =>
       deleteShopifyProduct(payload),
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["productGraphQl", sku] });
+      queryClient.removeQueries({ queryKey: ["productGraphQl"] });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
-      console.log("deleted");
+      
       notifySuccess("Product deleted from Shopify!");
     },
     onError: (error) => {
-      console.log(error);
+      
       notifyError(`Failed to delete product: ${error.message}`);
     },
   });
@@ -120,7 +119,7 @@ export function useShopifyDelete(sku: string) {
     isFetchingDelete: isDeletingProduct,
     isErrorDelete,
     error: errorDelete,
-    deleteProduct,
+    deleteProduct
   };
 }
 
@@ -130,7 +129,7 @@ export function useShopifyGraphQl(sku: string | undefined, token: string) {
     isFetching: isFetchingGraphQl,
     isError: isErrorGraphQl,
     error: errorGraphQl,
-    refetch: refetchShopifyGraphQl,
+    refetch: refetchShopifyGraphQl
   } = useQuery({
     queryKey: ["productGraphQl", sku],
     queryFn: () => fetchShopifyGraphQl(sku, token),
@@ -141,7 +140,7 @@ export function useShopifyGraphQl(sku: string | undefined, token: string) {
     isFetchingGraphQl,
     isErrorGraphQl,
     errorGraphQl,
-    refetchShopifyGraphQl,
+    refetchShopifyGraphQl
   };
 }
 
@@ -151,10 +150,11 @@ export function useImportedProducts(token: string) {
     error: errorImportedProducts,
     isError: isErrorImportedProducts,
     isFetching: isFetchingImportedProducts,
-    refetch: refecthImportedProducts,
+    refetch: refecthImportedProducts
   } = useQuery({
     queryKey: ["importedProducts"],
     queryFn: () => fetchImportedProducts(token),
+    staleTime: 1000 * 60 * 5
   });
 
   return {

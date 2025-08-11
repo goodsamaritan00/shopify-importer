@@ -1,13 +1,6 @@
-const BASE_URL: string = "https://importer-be.onrender.com";
+import authHeaders from "./utils/auth-headers";
 
-const authHeaders = (token: string) => {
-  const AUTH_HEADERS: HeadersInit = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-
-  return AUTH_HEADERS;
-};
+const BASE_URL: string = "http://localhost:5000";
 
 // import product to shopify
 export const importShopifyProduct = async (payload: {
@@ -26,7 +19,7 @@ export const importShopifyProduct = async (payload: {
 
     return data;
   } catch (error) {
-    console.log(error);
+    
   }
 };
 
@@ -56,7 +49,6 @@ export const deleteShopifyProduct = async (payload: {
   }
 };
 
-// update shopify products
 export const updateShopifyProduct = async (payload: {
   id: string | null;
   data: any;
@@ -75,7 +67,7 @@ export const updateShopifyProduct = async (payload: {
 
     return data;
   } catch (error) {
-    console.log(error);
+    
   }
 };
 
@@ -118,7 +110,7 @@ export const fetchShopifyGraphQl = async (
       const product = edges[0].node.product;
       return product;
     } else {
-      console.log("No product variants found for query:", sku);
+      
     }
   } catch (error) {
     console.error("GraphQL fetch error:", error);
@@ -141,6 +133,6 @@ export const fetchImportedProducts = async (token: string) => {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.log(error);
+    
   }
 };

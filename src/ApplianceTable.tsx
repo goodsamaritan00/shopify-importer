@@ -10,12 +10,17 @@ import {
 } from "./hooks/useEuras";
 import useProductTableContext from "./hooks/useProductTableContext";
 
-export default function ApplianceTable({ searchQuery }: any) {
+interface IApplianceTableProps {
+  searchQuery: string
+}
+
+export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
   const { setRowData } = useProductTableContext();
 
+  // const [deviceQuery, setDeviceQuery] = useState<string>('')
   const [anzahl] = useState("10");
   const [site] = useState<string>("1");
-  const [geraeteid, setGeraeteid] = useState<string>("");
+  const [deviceId, setDeviceId] = useState<string>("");
 
   const { user } = useAuthContext();
 
@@ -27,14 +32,7 @@ export default function ApplianceTable({ searchQuery }: any) {
   );
 
   const { eurasProductsByAppliances, isSuccessEurasProductsByAppliances } =
-    useEurasProductsByAppliances(searchQuery, geraeteid, site, user!.token);
-
-  console.log(
-    "PRODUCTCTS 2 APPLIANCES",
-    searchQuery,
-    geraeteid,
-    eurasProductsByAppliances,
-  );
+    useEurasProductsByAppliances(searchQuery, deviceId, site, user!.token);
 
   const gridRef = useRef<AgGridReact>(null);
 
@@ -77,13 +75,20 @@ export default function ApplianceTable({ searchQuery }: any) {
       flex: 1,
       minWidth: 120,
     },
+    // {
+    //   field: "search",
+    //   headerName: "Search Form",
+    //   headerComponent: SearchForm,
+    //   flex: 1.2,
+    //   minWidth: 150,
+    // },
   ]);
 
   useEffect(() => {
     if (eurasProductsByAppliances) {
       setRowData(eurasProductsByAppliances);
     }
-  }, [isSuccessEurasProductsByAppliances]);
+  }, [isSuccessEurasProductsByAppliances, deviceId]);
 
   return (
     <div className="h-full border-b">
@@ -93,11 +98,10 @@ export default function ApplianceTable({ searchQuery }: any) {
         rowData={eurasAppliances}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
+        // context={{ deviceId, setDeviceId, searchQuery }}
         onRowDoubleClicked={(p: RowDoubleClickedEvent) => {
-          setGeraeteid(p.data.geraeteid);
+          setDeviceId(p.data.geraeteid);
         }}
-        // suppressRowClickSelection={true}
-        // rowSelection="multiple"
       />
     </div>
   );

@@ -1,19 +1,21 @@
+import { type CellClassParams } from "ag-grid-community";
+
 import { Button } from "../ui/button";
 import { useShopifyImport } from "../../hooks/useShopify";
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import useAuthContext from "../../hooks/useAuthContext";
 import Loader from "../ui/loader";
 
-export default function ImportSelectedButton(p: any) {
+export default function ImportSelectedButton(p: CellClassParams) {
   const { user } = useAuthContext();
-  const { importProducts, isImporting } = useShopifyImport(p.originalnummer);
+  const { importProducts, isImporting } = useShopifyImport();
 
   const handleImportSelectedProducts = async () => {
     const selectedNodes = p.api.getSelectedNodes();
     const selectedData = selectedNodes.map((node: any) => node.data);
 
     if (!user) {
-      return console.log("No User");
+      return 
     }
 
     for (const product of selectedData) {

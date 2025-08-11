@@ -1,12 +1,17 @@
 import type { ActionType } from "../context/AuthContext";
 
-const BASE_URL: string = "https://importer-be.onrender.com";
+const BASE_URL: string = "http://localhost:5000";
 
 export interface IAuthProps {
   email: string;
   password: string;
   dispatch: React.Dispatch<ActionType>;
 }
+
+/*
+- Creates new account via backend API and generates new JWT token for the user.
+- User is stored in MongoDB and token is stored in local storage (for now) 
+*/
 
 export const userSignup = async (
   email: string,
@@ -32,6 +37,9 @@ export const userSignup = async (
     if (error instanceof Error) throw error;
   }
 };
+
+/* Finds existing user in the db and adds JWT token to the local storage */
+
 export const userLogin = async (
   email: string,
   password: string,

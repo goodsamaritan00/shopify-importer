@@ -1,23 +1,24 @@
-import { Button } from "../ui/button";
+import { type CellClassParams } from "ag-grid-community";
+
+import useAuthContext from "../../hooks/useAuthContext";
 import {
   useImportedProducts,
   useShopifyImport,
   useShopifyDelete,
   useShopifyUpdate,
 } from "../../hooks/useShopify";
+
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
-// utils
-import GetImportedProducts from "../../utils/get-imported-products";
+import getImportedProducts from "../../utils/get-imported-products";
 import productImportStatus from "../../utils/product-import-status";
-// assets
+
 import { HiMiniArrowDownTray } from "react-icons/hi2";
 import { GrSync } from "react-icons/gr";
 import { FaInfo, FaTrashAlt } from "react-icons/fa";
-import { ClipLoader } from "react-spinners";
-import useAuthContext from "../../hooks/useAuthContext";
-import Loader from "../ui/loader";
 
-import { type CellClassParams } from "ag-grid-community";
+import Loader from "../ui/loader";
+import { Button } from "../ui/button";
+
 
 export default function HandleProduct(p: CellClassParams) {
   const { user } = useAuthContext();
@@ -27,17 +28,11 @@ export default function HandleProduct(p: CellClassParams) {
   }
 
   const { importedProducts } = useImportedProducts(user.token);
-  const { importProducts, isImporting } = useShopifyImport(
-    p.data.originalnummer,
-  );
-  const { updateProduct, isUpdatingProduct } = useShopifyUpdate(
-    p.data.originalnummer,
-  );
-  const { deleteProduct, isFetchingDelete } = useShopifyDelete(
-    p.data.originalnummer,
-  );
+  const { importProducts, isImporting } = useShopifyImport();
+  const { updateProduct, isUpdatingProduct } = useShopifyUpdate();
+  const { deleteProduct, isFetchingDelete } = useShopifyDelete();
 
-  const importedProduct = GetImportedProducts(p, importedProducts);
+  const importedProduct = getImportedProducts(p, importedProducts);
   const isImported = productImportStatus(p.data, importedProducts);
 
   return (
@@ -71,7 +66,7 @@ export default function HandleProduct(p: CellClassParams) {
           }
         >
           {isUpdatingProduct ? (
-            <ClipLoader color="oklch(62.3% 0.214 259.815)" size={18} />
+            <Loader color="oklch(62.3% 0.214 259.815)" size={18} />
           ) : (
             <GrSync className="size-5" />
           )}
@@ -91,7 +86,7 @@ export default function HandleProduct(p: CellClassParams) {
         }
       >
         {isFetchingDelete ? (
-          <ClipLoader color="oklch(70.4% 0.191 22.216)" size={18} />
+          <Loader color="oklch(70.4% 0.191 22.216)" size={18} />
         ) : (
           <FaTrashAlt className="size-5" />
         )}
