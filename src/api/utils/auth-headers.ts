@@ -7,4 +7,4 @@ const authHeaders = (token: string) => {
   return AUTH_HEADERS;
 };
 
-export default authHeaders
+export default authHeaders;

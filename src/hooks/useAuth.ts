@@ -21,7 +21,6 @@ export function useSignup() {
       navigate("/product-table");
     },
     onError: (error) => {
-      
       notifyError(error.message);
     },
   });
@@ -54,7 +53,6 @@ export function useLogin() {
       navigate("/");
     },
     onError: (error) => {
-      
       notifyError(error.message);
     },
   });

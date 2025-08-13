@@ -1,26 +1,20 @@
 import { AgGridReact } from "ag-grid-react";
-import {
-  type RowDoubleClickedEvent,
-} from "ag-grid-community";
-import { useEffect, useRef, useState } from "react";
+import { type RowDoubleClickedEvent } from "ag-grid-community";
+import { useRef, useState } from "react";
 import useAuthContext from "./hooks/useAuthContext";
 import {
   useEurasAppliances,
-  useEurasProductsByAppliances,
 } from "./hooks/useEuras";
-import useProductTableContext from "./hooks/useProductTableContext";
+import { useNavigate } from "react-router-dom";
 
 interface IApplianceTableProps {
-  searchQuery: string
+  searchQuery: string;
 }
 
 export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
-  const { setRowData } = useProductTableContext();
 
-  // const [deviceQuery, setDeviceQuery] = useState<string>('')
   const [anzahl] = useState("10");
   const [site] = useState<string>("1");
-  const [deviceId, setDeviceId] = useState<string>("");
 
   const { user } = useAuthContext();
 
@@ -31,8 +25,7 @@ export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
     user!.token,
   );
 
-  const { eurasProductsByAppliances, isSuccessEurasProductsByAppliances } =
-    useEurasProductsByAppliances(searchQuery, deviceId, site, user!.token);
+  const navigate = useNavigate();
 
   const gridRef = useRef<AgGridReact>(null);
 
@@ -75,20 +68,7 @@ export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
       flex: 1,
       minWidth: 120,
     },
-    // {
-    //   field: "search",
-    //   headerName: "Search Form",
-    //   headerComponent: SearchForm,
-    //   flex: 1.2,
-    //   minWidth: 150,
-    // },
   ]);
-
-  useEffect(() => {
-    if (eurasProductsByAppliances) {
-      setRowData(eurasProductsByAppliances);
-    }
-  }, [isSuccessEurasProductsByAppliances, deviceId]);
 
   return (
     <div className="h-full border-b">
@@ -100,7 +80,14 @@ export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
         defaultColDef={defaultColDef}
         // context={{ deviceId, setDeviceId, searchQuery }}
         onRowDoubleClicked={(p: RowDoubleClickedEvent) => {
-          setDeviceId(p.data.geraeteid);
+          if (p.data.geraeteid) {
+            navigate("/products-by-appliances", {
+              state: {
+                deviceId: p.data.geraeteid,
+                searchQuery,
+              },
+            });
+          }
         }}
       />
     </div>

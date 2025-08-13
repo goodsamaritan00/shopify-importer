@@ -6,7 +6,6 @@ import Status from "./Status";
 import useAuthContext from "../../hooks/useAuthContext";
 import { useImportedProducts } from "../../hooks/useShopify";
 
-
 export default function ImportStatus(p: CellClassParams) {
   const { user } = useAuthContext();
   const { importedProducts } = useImportedProducts(user!.token);

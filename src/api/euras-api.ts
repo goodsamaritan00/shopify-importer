@@ -24,7 +24,7 @@ export const fetchEurasProducts = async (
 
     const res = await fetch(URL, { headers: authHeaders(token) });
     const data = await res.json();
-    
+
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]
     ).map((item: IEurasProduct) => {
@@ -38,9 +38,7 @@ export const fetchEurasProducts = async (
     };
 
     return final;
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 export const fetchEurasAppliances = async (
@@ -62,10 +60,8 @@ export const fetchEurasAppliances = async (
     const data = await res.json();
 
     const final = Object.values(data.treffer);
-
     return final;
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const fetchEurasProductsByAppliances = async (
@@ -80,22 +76,24 @@ export const fetchEurasProductsByAppliances = async (
       suchbg: searchQuery,
       geraeteid: applianceId,
     });
-    
+
     const URL: string = `${BASE_URL}/routes/eurasProductsByAppliances?${params.toString().replace(/\+/g, "%")}`;
 
     const res = await fetch(URL, { headers: authHeaders(token) });
     const data = await res.json();
-    
+    console.log(data);
+
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]
     ).map((item: IEurasProduct) => {
       return extractProductData(item);
     });
 
-    
+    const final: any = {
+      total: data.anzahltreffer,
+      data: filterData,
+    };
 
-    return filterData;
-  } catch (error) {
-    
-  }
+    return final;
+  } catch (error) {}
 };

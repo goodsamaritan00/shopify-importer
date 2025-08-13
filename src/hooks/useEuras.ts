@@ -35,7 +35,7 @@ export function useEurasProducts(
       if (!user) throw new Error("User error, please sign in and try again.");
       return fetchEurasProducts(searchQuery, displayNumber, siteNumber, token);
     },
-    enabled: !!searchQuery
+    enabled: !!searchQuery,
   });
 
   return {
@@ -102,7 +102,7 @@ export function useEurasProductsByAppliances(
       devicesQuery,
       seite,
       token,
-      geraeteid
+      geraeteid,
     ],
     queryFn: () => {
       if (!user) throw new Error("User error, please sign in and try again.");
@@ -113,7 +113,7 @@ export function useEurasProductsByAppliances(
         token,
       );
     },
-    enabled: !!geraeteid
+    enabled: !!geraeteid,
   });
 
   return {

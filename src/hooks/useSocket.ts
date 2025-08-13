@@ -28,7 +28,6 @@ export function useShopifyUpdate() {
     },
     onError: (error: Error) => {
       if (error instanceof Error) {
-        
         notifyError(`Product update failed: ${error.message}`);
       }
     },

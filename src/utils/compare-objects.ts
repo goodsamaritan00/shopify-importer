@@ -1,14 +1,12 @@
 function compareObjects(obj1: any, obj2: any) {
-  
-
   const variant1 = obj1.variants?.[0];
   const variant2 = obj2.variants?.[0];
 
   // Safely normalize the price
   const normalizePrice = (price: any) => {
-    if (typeof price === 'number') return price;
-    if (typeof price === 'string') {
-      return parseFloat(price.replace(',', '.').replace(/[^\d.]/g, ''));
+    if (typeof price === "number") return price;
+    if (typeof price === "string") {
+      return parseFloat(price.replace(",", ".").replace(/[^\d.]/g, ""));
     }
     return NaN;
   };

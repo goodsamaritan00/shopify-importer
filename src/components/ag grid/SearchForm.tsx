@@ -1,16 +1,21 @@
-import React from 'react'
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { FaSearch } from 'react-icons/fa';
+import React from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { FaSearch } from "react-icons/fa";
 
 interface ISearchFormProps {
-  searchInput: string,
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>,
-  setSiteNumber: React.Dispatch<React.SetStateAction<string>>,
-  setSearchInput: React.Dispatch<React.SetStateAction<string>>,
+  searchInput: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  setSiteNumber: React.Dispatch<React.SetStateAction<string>>;
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function SearchForm({ searchInput, setSearchQuery, setSiteNumber, setSearchInput }: ISearchFormProps) {
+export default function SearchForm({
+  searchInput,
+  setSearchQuery,
+  setSiteNumber,
+  setSearchInput,
+}: ISearchFormProps) {
   return (
     <form
       onSubmit={(e) => {
@@ -18,7 +23,7 @@ export default function SearchForm({ searchInput, setSearchQuery, setSiteNumber,
         setSearchQuery(searchInput);
         setSiteNumber("1");
       }}
-      className="w-[500px] relative group"
+      className="w-[50%] relative group mx-auto mb-4"
     >
       <Input
         onChange={(e) => setSearchInput(e.target.value)}
@@ -33,5 +38,5 @@ export default function SearchForm({ searchInput, setSearchQuery, setSiteNumber,
         <FaSearch className="text-neutral-300 transition duration-500 group-focus-within:text-neutral-400" />
       </Button>
     </form>
-  )
+  );
 }

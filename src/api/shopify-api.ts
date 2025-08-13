@@ -18,9 +18,7 @@ export const importShopifyProduct = async (payload: {
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 // delete product
@@ -66,9 +64,7 @@ export const updateShopifyProduct = async (payload: {
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };
 
 export const fetchShopifyGraphQl = async (
@@ -110,7 +106,6 @@ export const fetchShopifyGraphQl = async (
       const product = edges[0].node.product;
       return product;
     } else {
-      
     }
   } catch (error) {
     console.error("GraphQL fetch error:", error);
@@ -132,7 +127,5 @@ export const fetchImportedProducts = async (token: string) => {
     });
     const data = await res.json();
     return data;
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 };

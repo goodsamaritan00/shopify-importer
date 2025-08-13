@@ -1,4 +1,4 @@
-import { type RowClassParams } from 'ag-grid-community'
+import { type RowClassParams } from "ag-grid-community";
 
 import { useImportedProducts } from "../../hooks/useShopify";
 import getImportedProducts from "../../utils/get-imported-products";
@@ -9,7 +9,6 @@ import Status from "./Status";
 import useAuthContext from "../../hooks/useAuthContext";
 
 export default function UpdateStatus(p: RowClassParams) {
-
   const { user } = useAuthContext();
   const { importedProducts } = useImportedProducts(user!.token);
 

@@ -4,63 +4,65 @@ import { AgGridReact } from "ag-grid-react";
 import { type ValueFormatterParams } from "ag-grid-community";
 import "ag-grid-community/styles/ag-theme-material.css";
 
-import { useEurasProducts } from "./hooks/useEuras";
+import {  useEurasProductsByAppliances } from "./hooks/useEuras";
 
-import { MdOutlineDragHandle } from "react-icons/md";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Panel, PanelGroup } from "react-resizable-panels";
 
 import useAuthContext from "./hooks/useAuthContext";
 import Loader from "./components/ui/loader";
-import ApplianceTable from "./ApplianceTable";
-import SearchForm from "./components/ag grid/SearchForm";
+
 import {
   defaultProductColDefs,
   productColDefs,
 } from "./table-config/productTableConfig";
-import TablePagination from "./components/table-pagination/TablePagination";
+import { useLocation } from "react-router-dom";
+import SearchForm from "./components/ag grid/SearchForm";
 
-export default function ProductTable() {
+export default function ProductsByAppliancesTable() {
+  const location = useLocation();
+
+  const { deviceId, searchQuery } = location.state;
+
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [displayNumber, setDisplayNumber] = useState("40");
+  const [productQuery, setProductQuery] = useState<string>(searchQuery);
   const [siteNumber, setSiteNumber] = useState<string>("1");
 
   const { user } = useAuthContext();
-  const { eurasProducts, isFetchingEurasProducts } = useEurasProducts(
-    searchQuery,
-    displayNumber,
-    siteNumber,
-    user!.token,
-  );
+
+  const { eurasProductsByAppliances, isFetchingEurasProductsByAppliances } =
+    useEurasProductsByAppliances(
+      productQuery,
+      deviceId,
+      siteNumber,
+      user!!.token,
+    );
 
   const gridRef = useRef<AgGridReact>(null);
 
   return (
     <div className="ag-theme-material h-full mx-auto flex flex-col px-1 pb-1 pt-4 text-neutral-500 bg-neutral-50">
-      <SearchForm
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        setSiteNumber={setSiteNumber}
-        setSearchQuery={setSearchQuery}
-      />
+      <div className="flex px-16">
+        <SearchForm
+          searchInput={searchInput}
+          setSearchQuery={setProductQuery}
+          setSiteNumber={setSiteNumber}
+          setSearchInput={setSearchInput}
+        />
+      </div>
       <PanelGroup direction="vertical">
-        <Panel defaultSize={30} minSize={10}>
-          <ApplianceTable searchQuery={searchQuery} />
-        </Panel>
-
-        <PanelResizeHandle className="h-5 flex items-center justify-center bg-gray-50">
+        {/* <PanelResizeHandle className="h-5 flex items-center justify-center bg-gray-50">
           <MdOutlineDragHandle className="pointer-events-none text-4xl text-blue-400" />
-        </PanelResizeHandle>
+        </PanelResizeHandle> */}
 
         <Panel minSize={20}>
-          {isFetchingEurasProducts ? (
+          {isFetchingEurasProductsByAppliances ? (
             <Loader size={46} color="oklch(70.7% 0.165 254.624)" />
           ) : (
-            <div className="h-full w-full flex flex-col relative flex-grow min-h-0 ">
+            <div className="h-full w-full relative flex-grow min-h-0 overflow-auto">
               <AgGridReact
                 rowHeight={70}
                 ref={gridRef}
-                rowData={eurasProducts.data || []}
+                rowData={eurasProductsByAppliances.data || []}
                 columnDefs={productColDefs}
                 defaultColDef={defaultProductColDefs}
                 suppressRowClickSelection={true}
@@ -75,13 +77,6 @@ export default function ProductTable() {
                     });
                   }
                 }}
-              />
-              <TablePagination
-                displayNumber={displayNumber}
-                setDisplayNumber={setDisplayNumber}
-                setSiteNumber={setSiteNumber}
-                siteNumber={eurasProducts.siteNumbers}
-                total={eurasProducts.total}
               />
             </div>
           )}

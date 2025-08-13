@@ -19,7 +19,6 @@ import { FaInfo, FaTrashAlt } from "react-icons/fa";
 import Loader from "../ui/loader";
 import { Button } from "../ui/button";
 
-
 export default function HandleProduct(p: CellClassParams) {
   const { user } = useAuthContext();
 

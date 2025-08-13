@@ -21,7 +21,8 @@ export function useShopifyImport() {
     error: errorImport,
     mutate: importProducts,
   } = useMutation({
-    mutationFn: (payload: { data: any; token: string }) => importShopifyProduct(payload),
+    mutationFn: (payload: { data: any; token: string }) =>
+      importShopifyProduct(payload),
     onSuccess: (data) => {
       const product = data.product;
 
@@ -30,13 +31,15 @@ export function useShopifyImport() {
         createdAt: product.created_at,
         updatedAt: product.updated_at,
       });
-      queryClient.invalidateQueries({ queryKey: ["productGraphQl", product.sku] });
+      queryClient.invalidateQueries({
+        queryKey: ["productGraphQl", product.sku],
+      });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
 
       notifySuccess("Product imported to Shopify!");
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : 'Unknown Error'
+      const message = error instanceof Error ? error.message : "Unknown Error";
       notifyError(`Product import failed: ${message}`);
     },
   });
@@ -47,7 +50,7 @@ export function useShopifyImport() {
     isErrorImport,
     errorImport,
     isSuccessImport,
-    importProducts
+    importProducts,
   };
 }
 
@@ -79,7 +82,6 @@ export function useShopifyUpdate() {
       notifySuccess("Product updated!");
     },
     onError: (error) => {
-      
       notifyError(`Product update failed: ${error.message}`);
     },
   });
@@ -88,7 +90,7 @@ export function useShopifyUpdate() {
     isUpdatingProduct,
     isErrorUpdate,
     errorUpdate,
-    updateProduct
+    updateProduct,
   };
 }
 
@@ -106,11 +108,10 @@ export function useShopifyDelete() {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["productGraphQl"] });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
-      
+
       notifySuccess("Product deleted from Shopify!");
     },
     onError: (error) => {
-      
       notifyError(`Failed to delete product: ${error.message}`);
     },
   });
@@ -119,7 +120,7 @@ export function useShopifyDelete() {
     isFetchingDelete: isDeletingProduct,
     isErrorDelete,
     error: errorDelete,
-    deleteProduct
+    deleteProduct,
   };
 }
 
@@ -129,7 +130,7 @@ export function useShopifyGraphQl(sku: string | undefined, token: string) {
     isFetching: isFetchingGraphQl,
     isError: isErrorGraphQl,
     error: errorGraphQl,
-    refetch: refetchShopifyGraphQl
+    refetch: refetchShopifyGraphQl,
   } = useQuery({
     queryKey: ["productGraphQl", sku],
     queryFn: () => fetchShopifyGraphQl(sku, token),
@@ -140,7 +141,7 @@ export function useShopifyGraphQl(sku: string | undefined, token: string) {
     isFetchingGraphQl,
     isErrorGraphQl,
     errorGraphQl,
-    refetchShopifyGraphQl
+    refetchShopifyGraphQl,
   };
 }
 
@@ -150,11 +151,11 @@ export function useImportedProducts(token: string) {
     error: errorImportedProducts,
     isError: isErrorImportedProducts,
     isFetching: isFetchingImportedProducts,
-    refetch: refecthImportedProducts
+    refetch: refecthImportedProducts,
   } = useQuery({
     queryKey: ["importedProducts"],
     queryFn: () => fetchImportedProducts(token),
-    staleTime: 1000 * 60 * 5
+    staleTime: 1000 * 60 * 5,
   });
 
   return {

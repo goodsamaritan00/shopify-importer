@@ -15,7 +15,7 @@ export default function ImportSelectedButton(p: CellClassParams) {
     const selectedData = selectedNodes.map((node: any) => node.data);
 
     if (!user) {
-      return 
+      return;
     }
 
     for (const product of selectedData) {

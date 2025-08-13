@@ -7,6 +7,7 @@ import App from "./App";
 import AuthPage from "./AuthPage";
 import ProductTable from "./ProductTable";
 import ProtectedRoute from "./ProtectedRoute";
+import ProductsByAppliancesTable from "./ProductsByAppliancesTable";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,6 +18,14 @@ const router = createBrowserRouter(
         element={
           <ProtectedRoute>
             <ProductTable />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="products-by-appliances"
+        element={
+          <ProtectedRoute>
+            <ProductsByAppliancesTable />
           </ProtectedRoute>
         }
       />

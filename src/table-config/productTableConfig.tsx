@@ -6,6 +6,8 @@ import AvaliabilityStatus from "../components/ag grid/AvaliabilityStatus";
 import ImportStatus from "../components/ag grid/ImportStatus";
 import UpdateStatus from "../components/ag grid/UpdateStatus";
 
+import noPhoto from "../assets/no-photo.jpg";
+
 export const defaultProductColDefs = {
   flex: 1,
   filter: true,
@@ -30,8 +32,8 @@ export const productColDefs = [
     field: "thumbnailurl",
     headerName: "Image",
     flex: 1,
-    minWidth: 80,
-    maxWidth: 120,
+    minWidth: 50,
+    maxWidth: 110,
     cellRenderer: (p: CellClassParams) => (
       <div
         style={{
@@ -44,7 +46,7 @@ export const productColDefs = [
       >
         <img
           className="border border-neutral-400 h-[40px] rounded-md w-[40px] object-cover"
-          src={p.data.thumbnailurl}
+          src={p.data.thumbnailurl || noPhoto}
           alt="Product"
         />
       </div>
@@ -116,5 +118,5 @@ export const productColDefs = [
     flex: 1.3,
     minWidth: 140,
     cellRenderer: UpdateStatus,
-  }
-]
+  },
+];

@@ -6,5 +6,5 @@ interface ILoaderProps {
 }
 
 export default function Loader({ size, color }: ILoaderProps) {
-  return <ClipLoader size={size} color={color} />;
+  return <ClipLoader className="absolute top-1/2 left-1/2" size={size} color={color} />;
 }
