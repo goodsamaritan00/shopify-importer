@@ -1,17 +1,13 @@
 import { AgGridReact } from "ag-grid-react";
-import { type RowDoubleClickedEvent } from "ag-grid-community";
 import { useRef, useState } from "react";
 import useAuthContext from "./hooks/useAuthContext";
 import {
   useEurasAppliances,
 } from "./hooks/useEuras";
-import { useNavigate } from "react-router-dom";
+import ShowProductsButton from "./components/appliance table/ShowProductsButton";
 
-interface IApplianceTableProps {
-  searchQuery: string;
-}
 
-export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
+export default function ApplianceTable({ searchQuery }: any) {
 
   const [anzahl] = useState("10");
   const [site] = useState<string>("1");
@@ -25,9 +21,8 @@ export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
     user!.token,
   );
 
-  const navigate = useNavigate();
-
   const gridRef = useRef<AgGridReact>(null);
+  
 
   const defaultColDef = {
     flex: 1,
@@ -68,26 +63,25 @@ export default function ApplianceTable({ searchQuery }: IApplianceTableProps) {
       flex: 1,
       minWidth: 120,
     },
+   {
+      field: "search",
+      headerName: "Search",
+      flex: 0.6,
+      minWidth: 100,
+      cellRenderer: ShowProductsButton
+    }
   ]);
 
   return (
     <div className="h-full border-b">
       <AgGridReact
-        rowHeight={40}
+        rowHeight={50}
         ref={gridRef}
         rowData={eurasAppliances}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        // context={{ deviceId, setDeviceId, searchQuery }}
-        onRowDoubleClicked={(p: RowDoubleClickedEvent) => {
-          if (p.data.geraeteid) {
-            navigate("/products-by-appliances", {
-              state: {
-                deviceId: p.data.geraeteid,
-                searchQuery,
-              },
-            });
-          }
+        context={{
+          searchQuery, eurasAppliances
         }}
       />
     </div>

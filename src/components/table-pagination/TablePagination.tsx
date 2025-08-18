@@ -17,12 +17,15 @@ import {
 export default function TablePagination({
   displayNumber,
   setDisplayNumber,
-  setSiteNumber,
-  siteNumber,
+  setCurrentSite,
+  currentSite,
+  siteTotal,
   total,
 }: any) {
+
+
   return (
-    <div className="bg-white py-1 flex items-center border justify-between gap-8 px-18">
+    <div className="bg-white flex items-center border justify-between gap-8 px-14">
       <div className="text-sm flex items-center gap-2">
         <span>Total Results:</span>
         <span className="font-bold text-neutral-700">{total}</span>
@@ -58,7 +61,7 @@ export default function TablePagination({
           <PaginationItem>
             <PaginationPrevious
               onClick={() =>
-                setSiteNumber((prev: any) => {
+                setCurrentSite((prev: any) => {
                   const prevNum = Number(prev);
                   return prevNum > 1 ? String(prevNum - 1) : prev;
                 })
@@ -66,18 +69,20 @@ export default function TablePagination({
             />
           </PaginationItem>
 
-          {[...Array(siteNumber)].map((_, index) => {
+          {[...Array(siteTotal)].map((_, index) => {
             const site = index + 1;
             return (
               <PaginationItem
                 key={site}
                 data-page={site}
                 onClick={(e) => {
+                                console.log('CURRENT', currentSite, 'SITE', site)
+
                   const page = (e.currentTarget as HTMLElement).dataset.page;
-                  if (page) setSiteNumber(page);
+                  if (page) setCurrentSite(page);
                 }}
               >
-                <PaginationLink isActive={site.toString() === siteNumber}>
+                <PaginationLink isActive={site.toString()  === currentSite} className="">
                   {site}
                 </PaginationLink>
               </PaginationItem>
@@ -86,7 +91,7 @@ export default function TablePagination({
           <PaginationItem>
             <PaginationNext
               onClick={() =>
-                setSiteNumber((prev: any) => {
+                setCurrentSite((prev: any) => {
                   const prevNum = Number(prev);
                   return prevNum < total ? String(prevNum + 1) : prev;
                 })

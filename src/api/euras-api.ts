@@ -97,3 +97,57 @@ export const fetchEurasProductsByAppliances = async (
     return final;
   } catch (error) {}
 };
+
+export const fetchEurasProductsByAppliancesCategory = async (
+  categoryId: string,
+  applianceId: string,
+  site: string,
+  token: string,
+) => {
+  try {
+    const params = new URLSearchParams({
+      seite: site,
+      vgruppe: categoryId,
+      geraeteid: applianceId,
+    });
+
+    const URL: string = `${BASE_URL}/routes/eurasProductsByAppliances?${params.toString().replace(/\+/g, "%")}`;
+
+    const res = await fetch(URL, { headers: authHeaders(token) });
+    const data = await res.json();
+    console.log(data);
+
+    const filterData: IEurasProduct[] = (
+      Object.values(data.treffer) as IEurasProduct[]
+    ).map((item: IEurasProduct) => {
+      return extractProductData(item);
+    });
+
+    const final: any = {
+      total: data.anzahltreffer,
+      data: filterData,
+    };
+
+    return final;
+  } catch (error) {}
+};
+
+
+export const fetchEurasApplianceCategories = async (
+  deviceId: string,
+  token: string
+) => {
+  try {
+    const params = new URLSearchParams({
+      geraeteid: deviceId
+    });
+
+    const URL: string = `${BASE_URL}/routes/eurasApplianceCategories?${params.toString()}`;
+
+    const res = await fetch(URL, { headers: authHeaders(token) });
+    const data = await res.json();
+
+    const final = Object.values(data.treffer);
+    return final;
+  } catch (error) {}
+};

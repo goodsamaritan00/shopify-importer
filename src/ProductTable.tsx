@@ -23,48 +23,51 @@ export default function ProductTable() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [displayNumber, setDisplayNumber] = useState("40");
-  const [siteNumber, setSiteNumber] = useState<string>("1");
+  const [currentSite, setCurrentSite] = useState<string>("1");
 
   const { user } = useAuthContext();
   const { eurasProducts, isFetchingEurasProducts } = useEurasProducts(
     searchQuery,
     displayNumber,
-    siteNumber,
+    currentSite,
     user!.token,
   );
 
   const gridRef = useRef<AgGridReact>(null);
 
+  console.log('euras oridzcuts', eurasProducts)
+
   return (
-    <div className="ag-theme-material h-full mx-auto flex flex-col px-1 pb-1 pt-4 text-neutral-500 bg-neutral-50">
-      <SearchForm
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        setSiteNumber={setSiteNumber}
-        setSearchQuery={setSearchQuery}
-      />
+    <div className="ag-theme-material h-full mx-auto flex flex-col px-1  pt-4 ">
+      <div className="flex flex-col gap-1 w-1/4 mb-4 mx-14 text-neutral-500">
+        <small>Find products from EURAS database</small>
+        <SearchForm
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          setCurrentSite={setCurrentSite}
+          setSearchQuery={setSearchQuery}
+        />
+      </div>
       <PanelGroup direction="vertical">
-        <Panel defaultSize={30} minSize={10}>
+        <Panel className="flex flex-col  " defaultSize={30} minSize={10}>
           <ApplianceTable searchQuery={searchQuery} />
         </Panel>
 
         <PanelResizeHandle className="h-5 flex items-center justify-center bg-gray-50">
-          <MdOutlineDragHandle className="pointer-events-none text-4xl text-blue-400" />
+          <MdOutlineDragHandle className="pointer-events-none text-4xl text-blue-300" />
         </PanelResizeHandle>
 
-        <Panel minSize={20}>
-          {isFetchingEurasProducts ? (
-            <Loader size={46} color="oklch(70.7% 0.165 254.624)" />
-          ) : (
-            <div className="h-full w-full flex flex-col relative flex-grow min-h-0 ">
+        <Panel className="flex flex-col" minSize={20}>
+          <div className="h-full w-full flex flex-col relative flex-grow min-h-0 ">
               <AgGridReact
                 rowHeight={70}
                 ref={gridRef}
-                rowData={eurasProducts.data || []}
+                rowData={eurasProducts.data}
                 columnDefs={productColDefs}
                 defaultColDef={defaultProductColDefs}
                 suppressRowClickSelection={true}
                 rowSelection="multiple"
+                overlayNoRowsTemplate="No rows to show"
                 onCellDoubleClicked={(p: ValueFormatterParams) => {
                   if (p.colDef.field === "vgruppenname") {
                     gridRef.current?.api.deselectAll();
@@ -75,16 +78,19 @@ export default function ProductTable() {
                     });
                   }
                 }}
-              />
-              <TablePagination
-                displayNumber={displayNumber}
-                setDisplayNumber={setDisplayNumber}
-                setSiteNumber={setSiteNumber}
-                siteNumber={eurasProducts.siteNumbers}
-                total={eurasProducts.total}
-              />
-            </div>
-          )}
+            />
+            {isFetchingEurasProducts && (
+                <Loader size={25} color="blue" className="absolute" />
+            )}
+            <TablePagination
+              displayNumber={displayNumber}
+              setDisplayNumber={setDisplayNumber}
+              setCurrentSite={setCurrentSite}
+              currentSite={currentSite}
+              siteTotal={eurasProducts.siteNumbers}
+              total={eurasProducts.total}
+            />
+          </div>
         </Panel>
       </PanelGroup>
     </div>

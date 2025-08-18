@@ -1,7 +1,9 @@
 import {
+  fetchEurasApplianceCategories,
   fetchEurasAppliances,
   fetchEurasProducts,
   fetchEurasProductsByAppliances,
+  fetchEurasProductsByAppliancesCategory,
 } from "../api/euras-api";
 import { useQuery } from "@tanstack/react-query";
 import useAuthContext from "./useAuthContext";
@@ -123,5 +125,91 @@ export function useEurasProductsByAppliances(
     isErrorEurasProductsByAppliances,
     errorEurasProductsByAppliances,
     refetchEurasProductsByAppliances,
+  };
+}
+
+export function useEurasProductsByAppliancesCategory(
+  devicesQuery: string,
+  geraeteid: string,
+  seite: string,
+  token: string,
+) {
+  const { user } = useAuthContext();
+
+  const {
+    data: eurasProductsByAppliancesCategory = [],
+    isFetching: isFetchingEurasProductsByAppliancesCategory,
+    isSuccess: isSuccessEurasProductsByAppliancesCategory,
+    isError: isErrorEurasProductsByAppliancesCategory,
+    error: errorEurasProductsByAppliancesCategory,
+    refetch: refetchEurasProductsByAppliancesCategory,
+  } = useQuery({
+    staleTime: 5 * 60 * 1000,
+    queryKey: [
+      "eurasProductsByAppliancesCategory",
+      devicesQuery,
+      seite,
+      token,
+      geraeteid,
+    ],
+    queryFn: () => {
+      if (!user) throw new Error("User error, please sign in and try again.");
+      return fetchEurasProductsByAppliancesCategory(
+        devicesQuery,
+        geraeteid,
+        seite,
+        token,
+      );
+    },
+    enabled: !!geraeteid,
+  });
+
+  return {
+    eurasProductsByAppliancesCategory,
+    isFetchingEurasProductsByAppliancesCategory,
+    isSuccessEurasProductsByAppliancesCategory,
+    isErrorEurasProductsByAppliancesCategory,
+    errorEurasProductsByAppliancesCategory,
+    refetchEurasProductsByAppliancesCategory,
+  };
+}
+
+export function useEurasApplianceCategories(
+  geraeteid: string,
+  token: string,
+) {
+  const { user } = useAuthContext();
+
+  const {
+    data: eurasApplianceCategories = [],
+    isFetching: isFetchingEurasApplianceCategories,
+    isSuccess: isSuccessEurasApplianceCategories,
+    isError: isErrorEurasApplianceCategories,
+    error: errorEurasApplianceCategories,
+    refetch: refetchEurasApplianceCategories,
+  } = useQuery({
+    staleTime: 5 * 60 * 1000,
+    queryKey: [
+      "eurasApplianceCategories",
+      token,
+      geraeteid,
+    ],
+    queryFn: () => {
+      if (!user) throw new Error("User error, please sign in and try again.");
+      return fetchEurasApplianceCategories(
+        geraeteid,
+        token,
+      );
+    },
+    enabled: !!geraeteid,
+  });
+
+  return {
+    eurasApplianceCategories,
+    isFetchingEurasApplianceCategories,
+    isSuccessEurasApplianceCategories,
+    isErrorEurasApplianceCategories,
+    errorEurasApplianceCategories,
+    refetchEurasApplianceCategories,
   };
 }

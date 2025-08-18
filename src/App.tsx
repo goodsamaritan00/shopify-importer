@@ -20,8 +20,8 @@ export default function App() {
         pauseOnHover
         theme="light"
       />
-      <nav className="flex items-center justify-between p-4 px-14 relative border-b">
-        <h2 className="text-3xl font-[200] text-blue-400">
+      <nav className="flex items-center justify-between text-white bg-blue-400 p-4 px-14 relative border-b">
+        <h2 className="text-3xl font-[200] ">
           <span className="font-[600]">Shopify</span>
           Importer
         </h2>

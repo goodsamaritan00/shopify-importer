@@ -16,7 +16,7 @@ export default function NavMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="hover:bg-white/20 rounded-md py-1 px-2 flex items-center gap-2">
-        <IoMdMenu className="text-3xl text-blue-400" />
+        <IoMdMenu className="text-3xl " />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>Search Products</DropdownMenuItem>
