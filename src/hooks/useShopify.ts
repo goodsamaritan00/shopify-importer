@@ -8,7 +8,7 @@ import {
   fetchImportedProducts,
 } from "../api/shopify-api";
 
-import { notifyError, notifySuccess } from "../utils/toast-messages";
+import { notifyError } from "../utils/toast-messages";
 
 export function useShopifyImport() {
   const queryClient = useQueryClient();
@@ -19,9 +19,9 @@ export function useShopifyImport() {
     isError: isErrorImport,
     isSuccess: isSuccessImport,
     error: errorImport,
-    mutate: importProducts,
+    mutateAsync: importProducts,
   } = useMutation({
-    mutationFn: (payload: { data: any; token: string }) =>
+    mutationFn: async (payload: { data: any; token: string }) =>
       importShopifyProduct(payload),
     onSuccess: (data) => {
       const product = data.product;
@@ -35,12 +35,9 @@ export function useShopifyImport() {
         queryKey: ["productGraphQl", product.sku],
       });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
-
-      notifySuccess("Product imported to Shopify!");
     },
     onError: (error) => {
-      const message = error instanceof Error ? error.message : "Unknown Error";
-      notifyError(`Product import failed: ${message}`);
+      console.log(error);
     },
   });
 
@@ -61,7 +58,7 @@ export function useShopifyUpdate() {
     isPending: isUpdatingProduct,
     isError: isErrorUpdate,
     error: errorUpdate,
-    mutate: updateProduct,
+    mutateAsync: updateProduct,
   } = useMutation({
     mutationFn: (payload: {
       id: string | null;
@@ -78,8 +75,6 @@ export function useShopifyUpdate() {
       });
       queryClient.invalidateQueries({ queryKey: ["productGraphQl"] });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
-
-      notifySuccess("Product updated!");
     },
     onError: (error) => {
       notifyError(`Product update failed: ${error.message}`);
@@ -101,18 +96,17 @@ export function useShopifyDelete() {
     isPending: isDeletingProduct,
     isError: isErrorDelete,
     error: errorDelete,
-    mutate: deleteProduct,
+    mutateAsync: deleteProduct,
   } = useMutation({
     mutationFn: (payload: { id: string | null; token: string }) =>
       deleteShopifyProduct(payload),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["productGraphQl"] });
       queryClient.invalidateQueries({ queryKey: ["importedProducts"] });
-
-      notifySuccess("Product deleted from Shopify!");
     },
     onError: (error) => {
-      notifyError(`Failed to delete product: ${error.message}`);
+      notifyError(`Failed to delete product! Please try again.`);
+      console.log(error);
     },
   });
 

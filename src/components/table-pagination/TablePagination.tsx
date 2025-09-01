@@ -13,6 +13,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
+import getPages from "./utils/get-pages";
+
+type TablePaginationProps = {
+  displayNumber: string;
+  setDisplayNumber: (val: string) => void;
+  setCurrentSite: (val: string) => void;
+  currentSite: string;
+  siteTotal?: number;
+  total?: number;
+};
 
 export default function TablePagination({
   displayNumber,
@@ -21,21 +31,27 @@ export default function TablePagination({
   currentSite,
   siteTotal,
   total,
-}: any) {
+}: TablePaginationProps) {
+  const currentPage = Number(currentSite);
 
+  if (!siteTotal) return
+
+  const pages = getPages(currentPage, siteTotal);
 
   return (
     <div className="bg-white flex items-center border justify-between gap-8 px-14">
+      {/* Total results */}
       <div className="text-sm flex items-center gap-2">
         <span>Total Results:</span>
         <span className="font-bold text-neutral-700">{total}</span>
       </div>
 
+      {/* Per page selector */}
       <div className="flex items-center gap-2">
         <span className="text-sm text-neutral-500">Show</span>
         <Select
           defaultValue={displayNumber}
-          onValueChange={(value: any) => setDisplayNumber(value)}
+          onValueChange={(value: string) => setDisplayNumber(value)}
           value={displayNumber}
         >
           <SelectTrigger>
@@ -56,46 +72,48 @@ export default function TablePagination({
         <span className="text-sm text-neutral-500">per page</span>
       </div>
 
+      {/* Pagination */}
       <Pagination>
         <PaginationContent>
+          {/* Previous */}
           <PaginationItem>
             <PaginationPrevious
-              onClick={() =>
-                setCurrentSite((prev: any) => {
-                  const prevNum = Number(prev);
-                  return prevNum > 1 ? String(prevNum - 1) : prev;
-                })
-              }
+              onClick={() => {
+                const prevNum = Number(currentSite);
+                setCurrentSite(prevNum > 1 ? String(prevNum - 1) : currentSite);
+              }}
             />
           </PaginationItem>
 
-          {[...Array(siteTotal)].map((_, index) => {
-            const site = index + 1;
-            return (
+          {/* Pages */}
+          {pages.map((p, index) =>
+            p === "..." ? (
+              <PaginationItem key={`ellipsis-${index}`}>
+                <span className="px-2">…</span>
+              </PaginationItem>
+            ) : (
               <PaginationItem
-                key={site}
-                data-page={site}
+                key={p}
+                data-page={p}
                 onClick={(e) => {
-                                console.log('CURRENT', currentSite, 'SITE', site)
-
                   const page = (e.currentTarget as HTMLElement).dataset.page;
                   if (page) setCurrentSite(page);
                 }}
               >
-                <PaginationLink isActive={site.toString()  === currentSite} className="">
-                  {site}
+                <PaginationLink isActive={p.toString() === currentSite}>
+                  {p}
                 </PaginationLink>
               </PaginationItem>
-            );
-          })}
+            ),
+          )}
+
+          {/* Next */}
           <PaginationItem>
             <PaginationNext
-              onClick={() =>
-                setCurrentSite((prev: any) => {
-                  const prevNum = Number(prev);
-                  return prevNum < total ? String(prevNum + 1) : prev;
-                })
-              }
+              onClick={() => {
+                const prevNum = Number(currentSite);
+                setCurrentSite(prevNum < siteTotal ? String(prevNum + 1) : currentSite);
+              }}
             />
           </PaginationItem>
         </PaginationContent>

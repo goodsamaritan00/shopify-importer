@@ -35,14 +35,12 @@ export default function ProductTable() {
 
   const gridRef = useRef<AgGridReact>(null);
 
-  console.log('euras oridzcuts', eurasProducts)
-
   return (
     <div className="ag-theme-material h-full mx-auto flex flex-col px-1  pt-4 ">
-      <div className="flex flex-col gap-1 w-1/4 mb-4 mx-14 text-neutral-500">
-        <small>Find products from EURAS database</small>
+      <div className="w-1/5  mb-4 mx-14">
         <SearchForm
           searchInput={searchInput}
+          searchQuery={searchQuery}
           setSearchInput={setSearchInput}
           setCurrentSite={setCurrentSite}
           setSearchQuery={setSearchQuery}
@@ -59,29 +57,37 @@ export default function ProductTable() {
 
         <Panel className="flex flex-col" minSize={20}>
           <div className="h-full w-full flex flex-col relative flex-grow min-h-0 ">
-              <AgGridReact
-                rowHeight={70}
-                ref={gridRef}
-                rowData={eurasProducts.data}
-                columnDefs={productColDefs}
-                defaultColDef={defaultProductColDefs}
-                suppressRowClickSelection={true}
-                rowSelection="multiple"
-                overlayNoRowsTemplate="No rows to show"
-                onCellDoubleClicked={(p: ValueFormatterParams) => {
-                  if (p.colDef.field === "vgruppenname") {
-                    gridRef.current?.api.deselectAll();
-                    gridRef.current?.api.forEachNode((node: any) => {
-                      if (node.data.vgruppenname === p.data.vgruppenname) {
-                        node.setSelected(true);
-                      }
-                    });
-                  }
-                }}
+            <AgGridReact
+              rowHeight={70}
+              loading={isFetchingEurasProducts}
+              loadingOverlayComponent={() => {
+                return (
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader size={30} color="oklch(70.7% 0.165 254.624)" />
+                    <small className="text-sm font-semibold text-neutral-500">
+                      Getting products, please wait...
+                    </small>
+                  </div>
+                );
+              }}
+              ref={gridRef}
+              rowData={eurasProducts.data}
+              columnDefs={productColDefs}
+              defaultColDef={defaultProductColDefs}
+              suppressRowClickSelection={true}
+              rowSelection="multiple"
+              overlayNoRowsTemplate="No rows to show"
+              onCellDoubleClicked={(p: ValueFormatterParams) => {
+                if (p.colDef.field === "vgruppenname") {
+                  gridRef.current?.api.deselectAll();
+                  gridRef.current?.api.forEachNode((node: any) => {
+                    if (node.data.vgruppenname === p.data.vgruppenname) {
+                      node.setSelected(true);
+                    }
+                  });
+                }
+              }}
             />
-            {isFetchingEurasProducts && (
-                <Loader size={25} color="blue" className="absolute" />
-            )}
             <TablePagination
               displayNumber={displayNumber}
               setDisplayNumber={setDisplayNumber}

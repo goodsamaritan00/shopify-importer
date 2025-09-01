@@ -8,6 +8,18 @@ import {
   useShopifyUpdate,
 } from "../../hooks/useShopify";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../../components/ui/alert-dialog"
+
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import getImportedProducts from "../../utils/get-imported-products";
 import productImportStatus from "../../utils/product-import-status";
@@ -16,8 +28,9 @@ import { HiMiniArrowDownTray } from "react-icons/hi2";
 import { GrSync } from "react-icons/gr";
 import { FaInfo, FaTrashAlt } from "react-icons/fa";
 
-import Loader from "../ui/loader";
+
 import { Button } from "../ui/button";
+import { toast } from "react-toastify";
 
 export default function HandleProduct(p: CellClassParams) {
   const { user } = useAuthContext();
@@ -29,7 +42,7 @@ export default function HandleProduct(p: CellClassParams) {
   const { importedProducts } = useImportedProducts(user.token);
   const { importProducts, isImporting } = useShopifyImport();
   const { updateProduct, isUpdatingProduct } = useShopifyUpdate();
-  const { deleteProduct, isFetchingDelete } = useShopifyDelete();
+  const { deleteProduct } = useShopifyDelete();
 
   const importedProduct = getImportedProducts(p, importedProducts);
   const isImported = productImportStatus(p.data, importedProducts);
@@ -40,56 +53,106 @@ export default function HandleProduct(p: CellClassParams) {
         <Button
           className="text-xl"
           variant="table"
-          onClick={() =>
-            importProducts({
-              data: formatEurasToShopify(p.data),
-              token: user.token,
-            })
-          }
+          disabled={isImporting}
+          onClick={() => {
+            toast.promise(
+              importProducts({
+                data: formatEurasToShopify(p.data),
+                token: user.token,
+              }),
+              {
+                pending: "Importing Shopify product, please wait...",
+                success: "Product successfuly imported!",
+                error: "Something went wrong, please try again.",
+              },
+            );
+          }}
         >
-          {isImporting ? (
-            <Loader color="oklch(62.3% 0.214 259.815)" size={18} />
-          ) : (
-            <HiMiniArrowDownTray className="size-5" />
-          )}
+          <HiMiniArrowDownTray className="size-5" />
         </Button>
       ) : (
         <Button
           variant="table"
-          onClick={() =>
-            updateProduct({
-              id: importedProduct.id,
-              data: formatEurasToShopify(p.data),
-              token: user.token,
-            })
-          }
+          disabled={isUpdatingProduct}
+          onClick={() => {
+            toast.promise(
+              updateProduct({
+                id: importedProduct.id,
+                data: formatEurasToShopify(p.data),
+                token: user.token,
+              }),
+              {
+                pending: "Updating Shopify product, please wait...",
+                success: "Product successfuly updated!",
+                error: "Something went wrong, please try again.",
+              },
+            );
+          }}
         >
-          {isUpdatingProduct ? (
-            <Loader color="oklch(62.3% 0.214 259.815)" size={18} />
-          ) : (
-            <GrSync className="size-5" />
-          )}
+          <GrSync className="size-5" />
         </Button>
       )}
       <Button variant="table" disabled>
         <FaInfo className="size-5" />
       </Button>
+      <AlertDialog>
+        <Button variant='ghost' disabled={!isImported}>
+          <AlertDialogTrigger className="text-red-400">
+            <FaTrashAlt className="size-5" />
+          </AlertDialogTrigger>
+        </Button>
+        <AlertDialogContent className="border-4 border-blue-400">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete product from Shopify?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-blue-400 text-white">Cancel</AlertDialogCancel>
+            <AlertDialogAction className="bg-transparent border-none">
+              <Button
+                variant="danger"
+                className="bg-red-400 text-white"
+                onClick={async () => {
+                  toast.promise(
+                    deleteProduct({
+                      id: importedProduct.id,
+                      token: user.token,
+                    }),
+                    {
+                      pending: "Removing product from Shopify, please wait...",
+                      success: "Product successfuly removed!",
+                      error: "Something went wrong, please try again",
+                    },
+                  );
+                }}
+              >
+                Delete product
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <Button
         variant="danger"
         disabled={!isImported ? true : false}
-        onClick={() =>
-          deleteProduct({
-            id: importedProduct.id,
-            token: user.token,
-          })
-        }
+        onClick={async () => {
+          toast.promise(
+            deleteProduct({
+              id: importedProduct.id,
+              token: user.token,
+            }),
+            {
+              pending: "Removing product from Shopify, please wait...",
+              success: "Product successfuly removed!",
+              error: "Something went wrong, please try again",
+            },
+          );
+        }}
       >
-        {isFetchingDelete ? (
-          <Loader color="oklch(70.4% 0.191 22.216)" size={18} />
-        ) : (
-          <FaTrashAlt className="size-5" />
-        )}
       </Button>
+
     </div>
   );
 }

@@ -1,22 +1,37 @@
-function compareObjects(obj1: any, obj2: any) {
-  const variant1 = obj1.variants?.[0];
-  const variant2 = obj2.variants?.[0];
+const matches = (obj: any, source: any) =>
+  Object.keys(source).every(key => {
+    const val1 = obj[key];
+    const val2 = source[key];
 
-  // Safely normalize the price
-  const normalizePrice = (price: any) => {
-    if (typeof price === "number") return price;
-    if (typeof price === "string") {
-      return parseFloat(price.replace(",", ".").replace(/[^\d.]/g, ""));
+    if (typeof val1 === 'string' && typeof val2 === 'string') {
+      return val1.trim() === val2.trim();
     }
-    return NaN;
+
+    return val1 == val2;
+  });
+
+
+function compareObjects(obj1: any, obj2: any) {
+
+  console.log('1', obj1, '2', obj2)
+
+  const productData1 = {
+    product_type: obj1.product_type,
+    vendor: obj1.vendor,
+    price: obj1.variants[0].price,
+    sku: obj1.variants[0].sku,
+    qty: obj1.variants[0].inventory_quantity,
   };
 
-  const productTypeMatch = obj1.product_type === obj2.product_type;
-  const skuMatch = variant1?.sku === variant2?.sku;
-  const priceMatch =
-    normalizePrice(variant1?.price) === normalizePrice(variant2?.price);
+  const productData2 = {
+    product_type: obj2.product_type,
+    vendor: obj2.vendor,
+    price: obj2.variants[0].price,
+    sku: obj2.variants[0].sku,
+    qty: obj2.variants[0].inventory_quantity,
+  }
 
-  return productTypeMatch && skuMatch && priceMatch;
+  return matches(productData1, productData2) && matches(productData2, productData1);
 }
 
 export default compareObjects;

@@ -1,29 +1,27 @@
 import { type CellClassParams } from "ag-grid-community";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Input } from "../ui/input";
 import { IoMdRefreshCircle } from "react-icons/io";
-import { useEurasProductsByAppliances } from "../../hooks/useEuras";
-import useAuthContext from "../../hooks/useAuthContext";
-import useProductTableContext from "../../hooks/useProductTableContext";
+
 
 export default function SearchForm(p: CellClassParams) {
   const [searchInput, setSearchInput] = useState<string>("");
 
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
 
-  const { setRowData } = useProductTableContext();
+  // const { setRowData } = useProductTableContext();
 
-  const { deviceId, deviceQuery, setDeviceQuery } = p.context;
+  const { setDeviceQuery } = p.context;
 
-  const { eurasProductsByAppliances, isSuccessEurasProductsByAppliances } =
-    useEurasProductsByAppliances(deviceQuery, deviceId, "1", user!.token);
+  // const { eurasProductsByAppliances, isSuccessEurasProductsByAppliances } =
+  //   useEurasProductsByAppliances(deviceQuery, deviceId, "1", user!.token);
 
-  useEffect(() => {
-    if (eurasProductsByAppliances && isSuccessEurasProductsByAppliances) {
-      setRowData(eurasProductsByAppliances);
-    }
-  }, [isSuccessEurasProductsByAppliances]);
+  // useEffect(() => {
+  //   if (eurasProductsByAppliances && isSuccessEurasProductsByAppliances) {
+  //     setRowData(eurasProductsByAppliances);
+  //   }
+  // }, [isSuccessEurasProductsByAppliances]);
 
   return (
     <form

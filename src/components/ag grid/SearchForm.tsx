@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FaSearch } from "react-icons/fa";
+import { MdArrowOutward } from "react-icons/md";
+import { IoMdCloseCircle } from "react-icons/io";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ISearchFormProps {
   searchInput: string;
+  searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   setCurrentSite: React.Dispatch<React.SetStateAction<string>>;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
@@ -12,32 +16,92 @@ interface ISearchFormProps {
 
 export default function SearchForm({
   searchInput,
+  searchQuery, 
   setSearchQuery,
   setCurrentSite,
   setSearchInput,
 }: ISearchFormProps) {
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [displayRecent, setDisplayRecent] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!searchQuery) return;
+    const recentQueries = queryClient
+      .getQueryCache()
+      .findAll({ queryKey: ["eurasProducts"] });
+
+    const extract = recentQueries.map((query) => {
+      return query.queryKey[3] as string;
+    });
+
+    setRecentSearches(extract);
+  }, [searchQuery]);
+
   return (
-      <form
+    <form
       onSubmit={(e) => {
         e.preventDefault();
         setSearchQuery(searchInput);
         setCurrentSite("1");
       }}
-      className="w-full relative"
+      className="group transition rounded-md  duration-500 focus-within:border-neutral-300  w-full relative flex border bg-white text-sm shadow-sm border-neutral-200"
     >
-      <Input
-        onChange={(e) => setSearchInput(e.target.value)}
-        placeholder="Search product name, SKU or OEM..."
-        className="group border text-neutral-500 rounded-sm focus:border-neutral-500 border-neutral-300"
-        value={searchInput}
-      />
       <Button
         type="submit"
         variant="ghost"
-        className="absolute top-0 right-0 h-full"
+        size="sm"
+        className=" top-0 text-neutral-400 m-0 transition duration-500 group-focus-within:text-blue-400"
       >
-        <FaSearch className="text-neutral-300 group focus:text-neutral-500" />
+        <FaSearch />
       </Button>
+      <Input
+        onChange={(e) => setSearchInput(e.target.value)}
+        required
+        placeholder="Search products"
+        className=" border-none text-neutral-500 rounded-md font-semibold bg-white shadow-none px-0"
+        value={searchInput}
+        onFocus={() => setDisplayRecent(true)}
+        onBlur={() => setDisplayRecent(false)}
+      />
+      <Button
+        onClick={() => setSearchInput("")}
+        type="button"
+        variant="ghost"
+        size="sm"
+        className={`top-0  text-neutral-400 m-0 ${searchInput.length > 0 ? "block" : "hidden"}`}
+      >
+        <IoMdCloseCircle className="group-focus-within:text-blue-400" />
+      </Button>
+      <div
+        className={`absolute w-full rounded-md flex flex-col top-full mt-1 p-2  border border-neutral-200 shadow-md  bg-white z-20 ${displayRecent && searchInput.length < 1 ? "flex" : "hidden"}`}
+      >
+        <small className="text-xs text-neutral-600 font-bold mx-2 my-2">
+          Recent
+        </small>
+        <div className="flex flex-col gap-2 max-h-[100px] overflow-y-scroll">
+          {recentSearches.map((query: string) => {
+            return (
+              <Button
+                type="button"
+                onMouseDown={() => {
+                  setSearchInput(query);
+                  setSearchQuery(query);
+                  setCurrentSite("1");
+                }}
+                size="sm"
+                variant="ghost"
+                className=" flex text-sm justify-start transition duration-500 gap-4 hover:bg-neutral-100  w-full text-neutral-500"
+              >
+                <FaSearch className="text-neutral-400 text-xs group-focus-within:text-blue-400 " />
+                <span className="text-md">{query}</span>
+                <MdArrowOutward className="ml-auto text-sm group-focus-within:text-blue-400" />
+              </Button>
+            );
+          })}
+        </div>
+      </div>
     </form>
   );
 }

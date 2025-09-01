@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { userLogin, userSignup, type IAuthProps } from "../api/auth-api";
-import { notifyError, notifySuccess } from "../utils/toast-messages";
+import { notifyError } from "../utils/toast-messages";
 import { useNavigate } from "react-router-dom";
 
 export function useSignup() {
@@ -17,7 +17,6 @@ export function useSignup() {
     mutationFn: ({ email, password, dispatch }: IAuthProps) =>
       userSignup(email, password, dispatch),
     onSuccess: () => {
-      notifySuccess("User Signed in");
       navigate("/product-table");
     },
     onError: (error) => {
@@ -49,7 +48,6 @@ export function useLogin() {
     mutationFn: ({ email, password, dispatch }: IAuthProps) =>
       userLogin(email, password, dispatch),
     onSuccess: () => {
-      notifySuccess("User logged in");
       navigate("/");
     },
     onError: (error) => {
@@ -73,7 +71,6 @@ export function useLogout() {
   const logout = (dispatch: React.Dispatch<any>) => {
     localStorage.removeItem("User");
     dispatch({ type: "LOGOUT" });
-    notifySuccess("User successfuly logged out!");
     navigate("/auth");
   };
 

@@ -61,7 +61,7 @@ function PaginationLink({
         isActive
           ? "border border-blue-400 text-blue-400 font-bold"
           : "border-gray-300 text-gray-500",
-        className
+        className,
       )}
       {...props}
     />

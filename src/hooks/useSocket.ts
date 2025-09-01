@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { notifyError, notifySuccess } from "../utils/toast-messages";
+import { notifyError } from "../utils/toast-messages";
 import { updateShopifyProduct } from "../api/shopify-api";
 
 export function useShopifyUpdate() {
@@ -23,8 +23,6 @@ export function useShopifyUpdate() {
       });
       queryClient.refetchQueries({ queryKey: ["productGraphQl"] });
       queryClient.refetchQueries({ queryKey: ["importedProducts"] });
-
-      notifySuccess("Product updated!");
     },
     onError: (error: Error) => {
       if (error instanceof Error) {

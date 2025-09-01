@@ -5,7 +5,7 @@ import type {
 import extractProductData from "../utils/extract-euras-product";
 import authHeaders from "./utils/auth-headers";
 
-const BASE_URL: string = "https://importer-be.onrender.com";
+const BASE_URL: string = "http://localhost:5000";
 
 export const fetchEurasProducts = async (
   searchQuery: string,
@@ -65,29 +65,38 @@ export const fetchEurasAppliances = async (
 };
 
 export const fetchEurasProductsByAppliances = async (
-  searchQuery: string,
   applianceId: string,
   site: string,
   token: string,
+  searchQuery?: string,
+  category?: string,
 ) => {
   try {
     const params = new URLSearchParams({
       seite: site,
-      suchbg: searchQuery,
       geraeteid: applianceId,
     });
+
+      if (searchQuery) {
+      params.delete("vgruppe")
+      params.set("suchbg", searchQuery);
+    }
+  if (category) {
+    params.delete("suchbg")
+    params.set("vgruppe", category);
+  }
 
     const URL: string = `${BASE_URL}/routes/eurasProductsByAppliances?${params.toString().replace(/\+/g, "%")}`;
 
     const res = await fetch(URL, { headers: authHeaders(token) });
     const data = await res.json();
-    console.log(data);
 
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]
     ).map((item: IEurasProduct) => {
       return extractProductData(item);
     });
+
 
     const final: any = {
       total: data.anzahltreffer,
@@ -115,7 +124,6 @@ export const fetchEurasProductsByAppliancesCategory = async (
 
     const res = await fetch(URL, { headers: authHeaders(token) });
     const data = await res.json();
-    console.log(data);
 
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]
@@ -132,14 +140,13 @@ export const fetchEurasProductsByAppliancesCategory = async (
   } catch (error) {}
 };
 
-
 export const fetchEurasApplianceCategories = async (
   deviceId: string,
-  token: string
+  token: string,
 ) => {
   try {
     const params = new URLSearchParams({
-      geraeteid: deviceId
+      geraeteid: deviceId,
     });
 
     const URL: string = `${BASE_URL}/routes/eurasApplianceCategories?${params.toString()}`;

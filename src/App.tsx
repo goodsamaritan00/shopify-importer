@@ -19,6 +19,7 @@ export default function App() {
         draggable
         pauseOnHover
         theme="light"
+        limit={3}
       />
       <nav className="flex items-center justify-between text-white bg-blue-400 p-4 px-14 relative border-b">
         <h2 className="text-3xl font-[200] ">
@@ -33,8 +34,9 @@ export default function App() {
           <NavMenu />
         </div>
       </nav>
-      <div className="h-full">
+      <div className="h-full relative">
         <Outlet />
+        {/* <Logs /> */}
       </div>
     </div>
   );

@@ -71,6 +71,7 @@ export function useEurasAppliances(
       if (!user) throw new Error("User error, please sign in and try again.");
       return fetchEurasAppliances(searchQuery, seite, anzahl, token);
     },
+    enabled: !!searchQuery,
   });
 
   return {
@@ -83,10 +84,12 @@ export function useEurasAppliances(
 }
 
 export function useEurasProductsByAppliances(
-  devicesQuery: string,
   geraeteid: string,
   seite: string,
   token: string,
+  devicesQuery?: string,
+  category?: string,
+
 ) {
   const { user } = useAuthContext();
 
@@ -102,6 +105,7 @@ export function useEurasProductsByAppliances(
     queryKey: [
       "eurasProductsByAppliances",
       devicesQuery,
+      category,
       seite,
       token,
       geraeteid,
@@ -109,10 +113,11 @@ export function useEurasProductsByAppliances(
     queryFn: () => {
       if (!user) throw new Error("User error, please sign in and try again.");
       return fetchEurasProductsByAppliances(
-        devicesQuery,
         geraeteid,
         seite,
         token,
+        devicesQuery,
+        category,
       );
     },
     enabled: !!geraeteid,
@@ -174,10 +179,7 @@ export function useEurasProductsByAppliancesCategory(
   };
 }
 
-export function useEurasApplianceCategories(
-  geraeteid: string,
-  token: string,
-) {
+export function useEurasApplianceCategories(geraeteid: string, token: string) {
   const { user } = useAuthContext();
 
   const {
@@ -189,17 +191,10 @@ export function useEurasApplianceCategories(
     refetch: refetchEurasApplianceCategories,
   } = useQuery({
     staleTime: 5 * 60 * 1000,
-    queryKey: [
-      "eurasApplianceCategories",
-      token,
-      geraeteid,
-    ],
+    queryKey: ["eurasApplianceCategories", token, geraeteid],
     queryFn: () => {
       if (!user) throw new Error("User error, please sign in and try again.");
-      return fetchEurasApplianceCategories(
-        geraeteid,
-        token,
-      );
+      return fetchEurasApplianceCategories(geraeteid, token);
     },
     enabled: !!geraeteid,
   });

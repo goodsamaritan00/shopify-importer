@@ -5,6 +5,7 @@ import { useShopifyImport } from "../../hooks/useShopify";
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import useAuthContext from "../../hooks/useAuthContext";
 import Loader from "../ui/loader";
+import { toast } from "react-toastify";
 
 export default function ImportSelectedButton(p: CellClassParams) {
   const { user } = useAuthContext();
@@ -18,11 +19,24 @@ export default function ImportSelectedButton(p: CellClassParams) {
       return;
     }
 
-    for (const product of selectedData) {
-      importProducts({
-        data: formatEurasToShopify(product),
-        token: user.token,
-      });
+    try {
+      await toast.promise(
+        Promise.all(
+          selectedData.map((product: any) => {
+            return importProducts({
+              data: formatEurasToShopify(product),
+              token: user.token,
+            });
+          }),
+        ),
+        {
+          pending: `Importing ${selectedData.length} products, please wait...`,
+          success: `Successfuly imported ${selectedData.length} products to Shopify!`,
+          error: "Something went wrong, please try again.",
+        },
+      );
+    } catch (error) {
+      console.error(error);
     }
   };
 

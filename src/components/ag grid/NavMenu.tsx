@@ -21,7 +21,7 @@ export default function NavMenu() {
       <DropdownMenuContent>
         <DropdownMenuItem>Search Products</DropdownMenuItem>
         <DropdownMenuItem>Imported Products</DropdownMenuItem>
-        <DropdownMenuItem>Graph</DropdownMenuItem>
+        <DropdownMenuItem>Logs</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logout(dispatch)}>
           Log Out
