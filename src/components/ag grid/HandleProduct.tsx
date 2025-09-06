@@ -26,7 +26,7 @@ import productImportStatus from "../../utils/product-import-status";
 
 import { HiMiniArrowDownTray } from "react-icons/hi2";
 import { GrSync } from "react-icons/gr";
-import { FaInfo, FaTrashAlt } from "react-icons/fa";
+import { FaInfoCircle, FaTrashAlt } from "react-icons/fa";
 
 
 import { Button } from "../ui/button";
@@ -93,7 +93,7 @@ export default function HandleProduct(p: CellClassParams) {
         </Button>
       )}
       <Button variant="table" disabled>
-        <FaInfo className="size-5" />
+        <FaInfoCircle className="size-5" />
       </Button>
       <AlertDialog>
         <Button variant='ghost' disabled={!isImported}>

@@ -15,8 +15,10 @@ export default function Logs() {
 
   return (
     <div
-      className={`w-[23%] flex flex-col gap-8 h-full p-4 absolute ${logsActive ? "right-0" : "right-full"} top-0 bg-white z-30 border-l border-neutral-400`}
-    >
+className={`w-[23%] flex flex-col gap-8 h-full p-4 absolute top-0 right-0 bg-white z-30 border-l border-neutral-400
+  transition
+   duration-1000
+  ${!logsActive && 'm-[-200px]'}`}    >
       <IoIosCloseCircle
         onClick={() => setLogsActive(false)}
         className="text-neutral-400  text-xl"

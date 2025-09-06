@@ -34,9 +34,8 @@ export default function App() {
           <NavMenu />
         </div>
       </nav>
-      <div className="h-full relative">
+      <div className="h-full w-screen">
         <Outlet />
-        {/* <Logs /> */}
       </div>
     </div>
   );

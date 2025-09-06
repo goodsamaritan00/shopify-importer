@@ -115,9 +115,7 @@ export default function ProductsByAppliancesTable() {
       </div>
       <PanelGroup direction="vertical">
         <Panel minSize={20}>
-          {isFetchingEurasProductsByAppliances ? (
-            "Loading"
-          ) : (
+
             <div className="h-full w-full relative flex-grow min-h-0 overflow-auto">
               <AgGridReact
                 rowHeight={70}
@@ -150,7 +148,6 @@ export default function ProductsByAppliancesTable() {
                 }}
               />
             </div>
-          )}
         </Panel>
       </PanelGroup>
       <TablePagination
