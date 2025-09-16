@@ -34,16 +34,16 @@ export default function TablePagination({
 }: TablePaginationProps) {
   const currentPage = Number(currentSite);
 
-  if (!siteTotal) return
+  if (!siteTotal) return;
 
   const pages = getPages(currentPage, siteTotal);
 
   return (
-    <div className="bg-white flex items-center border justify-between gap-8 px-14">
+    <div className="bg-white flex rounded-md items-center border justify-between gap-8 px-14">
       {/* Total results */}
       <div className="text-sm flex items-center gap-2">
-        <span>Total Results:</span>
-        <span className="font-bold text-neutral-700">{total}</span>
+        <span className="text-neutral-500">Total Results:</span>
+        <span className="font-bold text-neutral-600">{total}</span>
       </div>
 
       {/* Per page selector */}
@@ -112,7 +112,9 @@ export default function TablePagination({
             <PaginationNext
               onClick={() => {
                 const prevNum = Number(currentSite);
-                setCurrentSite(prevNum < siteTotal ? String(prevNum + 1) : currentSite);
+                setCurrentSite(
+                  prevNum < siteTotal ? String(prevNum + 1) : currentSite,
+                );
               }}
             />
           </PaginationItem>

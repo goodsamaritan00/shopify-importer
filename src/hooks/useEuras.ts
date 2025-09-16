@@ -88,7 +88,6 @@ export function useEurasProductsByAppliances(
   token: string,
   devicesQuery?: string,
   category?: string,
-
 ) {
   const { user } = useAuthContext();
 
@@ -119,7 +118,7 @@ export function useEurasProductsByAppliances(
         category,
       );
     },
-  enabled: !!devicesQuery || !!category,
+    enabled: !!devicesQuery || !!category,
   });
 
   return {

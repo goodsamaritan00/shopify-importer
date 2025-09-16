@@ -7,10 +7,13 @@ const productImportStatus = (product: IEurasProduct, imported: any) => {
   }
 
   // Check if any imported product matches the artikelnummer
-  return imported.products.some(
-    (importedProduct: any) =>
-      importedProduct.variants?.[0]?.sku === product.artikelnummer,
-  );
+  return imported.products.some((importedProduct: any) =>
+  importedProduct.variants?.some(
+    (variant: any) =>
+      variant.sku?.trim().toLowerCase() === product.artikelnummer?.trim().toLowerCase()
+  )
+);
+
 };
 
 export default productImportStatus;

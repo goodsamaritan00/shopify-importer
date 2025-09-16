@@ -2,6 +2,7 @@ import { type CellClassParams } from "ag-grid-community";
 
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function ShowProductsButton(p: CellClassParams) {
   const searchQuery = p.context.searchQuery;
@@ -21,10 +22,10 @@ export default function ShowProductsButton(p: CellClassParams) {
           },
         });
       }}
-      size="sm"
-      className="text-xs h-[26px] rounded-sm"
+      className="text-xs h-[30px] rounded-full"
     >
-      Show Products
+      Results
+      <FaArrowRightLong />
     </Button>
   );
 }

@@ -5,7 +5,7 @@ import type {
 import extractProductData from "../utils/extract-euras-product";
 import authHeaders from "./utils/auth-headers";
 
-const BASE_URL: string = "https://importer-be.onrender.com";
+const BASE_URL: string = "http://localhost:5000";
 
 export const fetchEurasProducts = async (
   searchQuery: string,
@@ -77,14 +77,16 @@ export const fetchEurasProductsByAppliances = async (
       geraeteid: applianceId,
     });
 
- 
     if (searchQuery) {
-      params.delete("vgruppe");              // remove category
-      params.set("suchbg", searchQuery);     // set search
-    } else if (category) {
-      params.delete("suchbg");               // remove search
-      params.set("vgruppe", category);       // set category
+      params.delete("vgruppe"); // remove category
+      params.set("suchbg", searchQuery);
     }
+
+    if (category) {
+      params.delete("suchbg"); // remove search
+      params.set("vgruppe", category);
+    }
+
 
     const URL: string = `${BASE_URL}/routes/eurasProductsByAppliances?${params.toString().replace(/\+/g, "%")}`;
 
@@ -96,7 +98,6 @@ export const fetchEurasProductsByAppliances = async (
     ).map((item: IEurasProduct) => {
       return extractProductData(item);
     });
-
 
     const final: any = {
       total: data.anzahltreffer,

@@ -12,9 +12,6 @@ import { useState } from "react";
 import { useLogin } from "./hooks/useAuth";
 import useAuthContext from "./hooks/useAuthContext";
 
-import ThreePlogo from "./assets/3plogo.png";
-import ShopifyLogo from "./assets/shopify-logo.png";
-import AswoLogo from "./assets/aswo-logo.png";
 import Loader from "./components/ui/loader";
 
 export default function AuthPage() {
@@ -26,17 +23,14 @@ export default function AuthPage() {
   const { dispatch } = useAuthContext();
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center w-full h-screen bg-blue-400">
-      <h2 className="text-4xl font-[200] text-white">
-        <span className="font-[600]">Shopify</span>
-        Importer
-      </h2>
+    <div className="flex auth-background flex-col absolute w-screen h-screen top-0 z-50 items-center justify-center w-full h-screen ">
       {/* login */}
-      <Card className="w-full max-w-sm mb-22 mt-2">
+      <Card className="w-full max-w-[450px] mt-2 justify-around gap-8">
         <CardHeader>
-          <CardTitle className="text-xl">Login to your account</CardTitle>
-          <CardDescription className="mt-2">
-            Enter your email and password below to login to your account
+          <CardTitle className="text-2xl">Login to your account</CardTitle>
+          <CardDescription className="mt-2 text-sm">
+            Enter your email and password below to login to your Shopify
+            Importer account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -56,12 +50,6 @@ export default function AuthPage() {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <label htmlFor="password">Password</label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Request new password
-                  </a>
                 </div>
                 <Input
                   onChange={(e) => setLoginPassword(e.target.value)}
@@ -89,26 +77,13 @@ export default function AuthPage() {
           >
             {isLoggingUser ? <Loader color="#ffff" size={18} /> : "Log in"}
           </Button>
+          <div className="text-sm mr-auto mt-8">
+            <span>Forgot password?</span>
+            <span className="ml-2 font-semibold text-blue-400">
+              Request a new one.
+            </span>
+          </div>
         </CardFooter>
-        <div className="flex items-center justify-center gap-4">
-          <div className="h-[50px] w-[100px] flex items-center justify-center">
-            <img
-              className="h-full object-contain"
-              src={ShopifyLogo}
-              alt="Shopify"
-            />
-          </div>
-          <div className="h-[40px] w-[100px] flex items-center justify-center">
-            <img
-              className="h-full object-contain"
-              src={ThreePlogo}
-              alt="ThreeP"
-            />
-          </div>
-          <div className="h-[20px] w-[100px] flex items-center justify-center">
-            <img className="h-full object-contain" src={AswoLogo} alt="Aswo" />
-          </div>
-        </div>
       </Card>
     </div>
   );

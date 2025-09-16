@@ -28,7 +28,7 @@ function PaginationContent({
     <ul
       data-slot="pagination-content"
       className={cn(
-        "flex flex-row items-center gap-1 cursor-pointer",
+        "flex flex-row items-center gap-3 cursor-pointer",
         className,
       )}
       {...props}
@@ -59,7 +59,7 @@ function PaginationLink({
       className={cn(
         "py-1 px-2 rounded-sm",
         isActive
-          ? "border border-blue-400 text-blue-400 font-bold"
+          ? "border border-blue-400 bg-blue-400 text-white font-bold"
           : "border-gray-300 text-gray-500",
         className,
       )}

@@ -69,9 +69,8 @@ export default function ApplianceTable({ searchQuery }: any) {
   ]);
 
   return (
-    <div className="h-full border-b">
       <AgGridReact
-        rowHeight={50}
+        rowHeight={60}
         ref={gridRef}
         loading={isFetchingEurasAppliances}
         loadingOverlayComponent={() => {
@@ -92,6 +91,5 @@ export default function ApplianceTable({ searchQuery }: any) {
           eurasAppliances,
         }}
       />
-    </div>
   );
 }

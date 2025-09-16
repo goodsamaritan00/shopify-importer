@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -109,23 +108,16 @@
 }
 
 .ag-root-wrapper {
-  border-radius: 0px;
-  border-bottom: none;
 }
 
 .ag-cell-focus {
   border: none !important;
 }
 
-/* even rows background */
-.ag-row:nth-child(odd) {
-  background-color: rgb(248, 248, 248); /* or any color you want */
-}
-
 /* odd rows background */
 
 body {
-  font-family: "Nunito";
+  font-family: "Lato", sans-serif;
 }
 
 .ag-cell-inline-editing {
@@ -142,8 +134,109 @@ body {
 }
 
 .ag-header-row {
-  background-color: oklch(94.158% 0.02414 254.032);
-  color: white;
+  background-color: oklch(95.213% 0.00011 271.152);
+}
+
+.ag-header-cell-text {
+  color: rgb(106, 106, 106);
+}
+
+.ag-icon {
+  color: oklch(60.999% 0.00007 271.152);
+}
+
+
+.auth-background {
+  width: 100vw;
+  height: 100vh;
+  background:
+    radial-gradient(
+      100% 100% at var(--6-x-position) var(--6-y-position),
+      #48afdb 0%,
+      transparent
+    ),
+    radial-gradient(
+      100% 100% at var(--7-x-position) var(--7-y-position),
+      #48afdb 0%,
+      transparent
+    ),
+    radial-gradient(
+      100% 100% at var(--8-x-position) var(--8-y-position),
+      #2348b5 0%,
+      transparent
+    ),
+    radial-gradient(
+      100% 100% at var(--9-x-position) var(--9-y-position),
+      #2348b5 0%,
+      transparent
+    ),
+    #1b253b; /* fallback background */
+  animation-name: main;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  transition-timing-function: ease-in;
+}
+
+/* Define the custom properties */
+@property --6-x-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 20%;
+}
+@property --6-y-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
+}
+@property --7-x-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
+}
+@property --7-y-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 20%;
+}
+@property --8-x-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
+}
+@property --8-y-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
+}
+@property --9-x-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
+}
+@property --9-y-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 80%;
+}
+
+/* Animate the CSS variables */
+@keyframes main {
+  25% {
+    --6-x-position: 15%;
+    --6-y-position: 15%;
+    --7-x-position: 85%;
+    --7-y-position: 80%;
+  }
+  50% {
+    --6-x-position: 80%;
+    --6-y-position: 15%;
+    --7-x-position: 15%;
+    --7-y-position: 85%;
+    --8-x-position: 20%;
+    --8-y-position: 20%;
+    --9-x-position: 20%;
+    --9-y-position: 20%;
+  }
 }
 
 @layer base {

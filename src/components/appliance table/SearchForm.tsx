@@ -1,9 +1,8 @@
 import { type CellClassParams } from "ag-grid-community";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/input";
 import { IoMdRefreshCircle } from "react-icons/io";
-
 
 export default function SearchForm(p: CellClassParams) {
   const [searchInput, setSearchInput] = useState<string>("");

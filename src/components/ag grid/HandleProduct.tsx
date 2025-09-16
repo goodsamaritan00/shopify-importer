@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../../components/ui/alert-dialog"
+} from "../../components/ui/alert-dialog";
 
 import formatEurasToShopify from "../../utils/formatters/format-euras-to-shopify";
 import getImportedProducts from "../../utils/get-imported-products";
@@ -27,7 +27,6 @@ import productImportStatus from "../../utils/product-import-status";
 import { HiMiniArrowDownTray } from "react-icons/hi2";
 import { GrSync } from "react-icons/gr";
 import { FaInfoCircle, FaTrashAlt } from "react-icons/fa";
-
 
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
@@ -96,24 +95,26 @@ export default function HandleProduct(p: CellClassParams) {
         <FaInfoCircle className="size-5" />
       </Button>
       <AlertDialog>
-        <Button variant='ghost' disabled={!isImported}>
+        <Button variant="ghost" disabled={!isImported}>
           <AlertDialogTrigger className="text-red-400">
             <FaTrashAlt className="size-5" />
           </AlertDialogTrigger>
         </Button>
-        <AlertDialogContent className="border-4 border-blue-400">
+        <AlertDialogContent className="border- border-blue-400">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete product from Shopify?
+            <AlertDialogDescription className="mb-4">
+              Are you sure you want to delete product <span className="font-bold">{p.data.artikelbezeichnung}</span> from Shopify?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-blue-400 text-white">Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="bg-blue-400 px-4 -mr-4 hover:bg-blue-400 rounded-full hover:text-white text-white h-full text-sm ">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction className="bg-transparent border-none">
               <Button
                 variant="danger"
-                className="bg-red-400 text-white"
+                className="bg-red-500 text-white rounded-full text-sm"
                 onClick={async () => {
                   toast.promise(
                     deleteProduct({
@@ -129,6 +130,7 @@ export default function HandleProduct(p: CellClassParams) {
                 }}
               >
                 Delete product
+                <FaTrashAlt />
               </Button>
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -150,9 +152,7 @@ export default function HandleProduct(p: CellClassParams) {
             },
           );
         }}
-      >
-      </Button>
-
+      ></Button>
     </div>
   );
 }

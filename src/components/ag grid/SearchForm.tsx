@@ -12,14 +12,16 @@ interface ISearchFormProps {
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   setCurrentSite: React.Dispatch<React.SetStateAction<string>>;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
+  setCategory?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function SearchForm({
   searchInput,
-  searchQuery, 
+  searchQuery,
   setSearchQuery,
   setCurrentSite,
   setSearchInput,
+  setCategory,
 }: ISearchFormProps) {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [displayRecent, setDisplayRecent] = useState(false);
@@ -43,10 +45,13 @@ export default function SearchForm({
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        if (setCategory) {
+          setCategory("");
+        }
         setSearchQuery(searchInput);
         setCurrentSite("1");
       }}
-      className="group transition rounded-md  duration-500 focus-within:border-neutral-300  w-full relative flex border bg-white text-sm shadow-sm border-neutral-200"
+      className="group w-1/4 transition rounded-md duration-500 focus-within:shadow-sm relative flex border bg-white text-sm border-2 border-neutral-200"
     >
       <Button
         type="submit"
@@ -60,7 +65,7 @@ export default function SearchForm({
         onChange={(e) => setSearchInput(e.target.value)}
         required
         placeholder="Search products"
-        className=" border-none text-neutral-500 rounded-md font-semibold bg-white shadow-none px-0"
+        className=" border-none text-neutral-400 rounded-xl bg-white shadow-none px-0"
         value={searchInput}
         onFocus={() => setDisplayRecent(true)}
         onBlur={() => setDisplayRecent(false)}
@@ -77,7 +82,7 @@ export default function SearchForm({
       <div
         className={`absolute w-full rounded-md flex flex-col top-full mt-1 p-2  border border-neutral-200 shadow-md  bg-white z-20 ${displayRecent && searchInput.length < 1 ? "flex" : "hidden"}`}
       >
-        <small className="text-xs text-neutral-600 font-bold mx-2 my-2">
+        <small className="text-xs text-neutral-800 font-[500]  mx-2 my-2">
           Recent
         </small>
         <div className="flex flex-col gap-2 max-h-[100px] overflow-y-scroll">
