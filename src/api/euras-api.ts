@@ -92,7 +92,6 @@ export const fetchEurasProductsByAppliances = async (
     const res = await fetch(URL, { headers: authHeaders(token) });
     const data = await res.json();
 
-    console.log("PBA", data);
 
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]
