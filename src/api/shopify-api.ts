@@ -1,6 +1,6 @@
 import authHeaders from "./utils/auth-headers";
 
-const BASE_URL: string = "http://localhost:5000";
+const BASE_URL: string = "https://importer-be.onrender.com";
 // import product to shopify
 export const importShopifyProduct = async (payload: {
   data: any;
