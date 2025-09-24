@@ -26,10 +26,13 @@ import productImportStatus from "../../utils/product-import-status";
 
 import { HiMiniArrowDownTray } from "react-icons/hi2";
 import { GrSync } from "react-icons/gr";
-import { FaInfoCircle, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
+import { IoAddCircle } from "react-icons/io5";
 
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
+import { Input } from "../ui/input";
+import {  useState } from "react";
 
 export default function HandleProduct(p: CellClassParams) {
   const { user } = useAuthContext();
@@ -38,6 +41,8 @@ export default function HandleProduct(p: CellClassParams) {
     return <div>User error, please login and try again.</div>;
   }
 
+  const [priceValue, setPriceValue] = useState<string>("");
+
   const { importedProducts } = useImportedProducts(user.token);
   const { importProducts, isImporting } = useShopifyImport();
   const { updateProduct, isUpdatingProduct } = useShopifyUpdate();
@@ -45,6 +50,13 @@ export default function HandleProduct(p: CellClassParams) {
 
   const importedProduct = getImportedProducts(p, importedProducts);
   const isImported = productImportStatus(p.data, importedProducts);
+
+  const handleChange = (e: any) => {
+    const val = e.target.value;
+    if (/^\d*\.?\d{0,2}$/.test(val)) {
+      setPriceValue(val);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -56,12 +68,22 @@ export default function HandleProduct(p: CellClassParams) {
           onClick={() => {
             toast.promise(
               importProducts({
-                data: formatEurasToShopify(p.data),
+                data: formatEurasToShopify(p.data, p.node.data.shopify_price),
                 token: user.token,
+              }).then((result) => {
+                // after Shopify confirms, use the actual returned price
+                const confirmedPrice = result?.variants?.[0]?.price ?? null; // null if not returned
+
+                p.node.setDataValue("shopify_price", confirmedPrice);
+                p.api.refreshCells({
+                  rowNodes: [p.node],
+                  columns: ["shopify_price"],
+                  force: true,
+                });
               }),
               {
                 pending: "Importing Shopify product, please wait...",
-                success: "Product successfuly imported!",
+                success: "Product successfully imported!",
                 error: "Something went wrong, please try again.",
               },
             );
@@ -74,11 +96,25 @@ export default function HandleProduct(p: CellClassParams) {
           variant="table"
           disabled={isUpdatingProduct}
           onClick={() => {
+            const oldPrice = importedProduct?.variants?.[0]?.price;
+            const newPrice = p.node.data.shopify_price;
+            const updatePrice =
+              newPrice && newPrice !== oldPrice ? newPrice : oldPrice;
             toast.promise(
               updateProduct({
                 id: importedProduct.id,
-                data: formatEurasToShopify(p.data),
+                data: formatEurasToShopify(p.data, updatePrice),
                 token: user.token,
+              }).then((result) => {
+                // after Shopify confirms, use the actual returned price
+                const confirmedPrice = result?.variants?.[0]?.price ?? null; // null if not returned
+
+                p.node.setDataValue("shopify_price", confirmedPrice);
+                p.api.refreshCells({
+                  rowNodes: [p.node],
+                  columns: ["shopify_price"],
+                  force: true,
+                });
               }),
               {
                 pending: "Updating Shopify product, please wait...",
@@ -91,9 +127,56 @@ export default function HandleProduct(p: CellClassParams) {
           <GrSync className="size-5" />
         </Button>
       )}
-      <Button variant="table" disabled>
-        <FaInfoCircle className="size-5" />
-      </Button>
+
+      <AlertDialog>
+        <Button variant="ghost">
+          <AlertDialogTrigger>
+            <IoAddCircle className="size-6 text-blue-400" />
+          </AlertDialogTrigger>
+        </Button>
+        <AlertDialogContent className="border- border-blue-400">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg">
+              Edit Shopify product price
+            </AlertDialogTitle>
+            <AlertDialogDescription className="mb-4">
+              Edit price for product{" "}
+              <span className="font-bold">
+                {p.data.artikelbezeichnung}
+              </span>{" "}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <div className="flex">
+              <Input
+                onChange={handleChange}
+                value={priceValue}
+                placeholder="0.00"
+                type="text"
+                className="border-neutral-300 rounded-md focus:border-neutral-400"
+              />
+              <AlertDialogAction className="bg-transparent border-none">
+                <Button
+                  onClick={() => {
+                    p.node.setDataValue("shopify_price", priceValue);
+                    p.api.refreshCells({
+                      rowNodes: [p.node],
+                      columns: ["shopify_price"],
+                      force: true,
+                    });
+                  }}
+                >
+                  Add
+                </Button>
+              </AlertDialogAction>
+            </div>
+            <AlertDialogCancel className="bg-blue-400 px-4 mr-auto -ml-4 hover:bg-blue-400 rounded-full hover:text-white text-white h-full text-sm ">
+              Cancel
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <AlertDialog>
         <Button variant="ghost" disabled={!isImported}>
           <AlertDialogTrigger className="text-red-400">
@@ -104,7 +187,9 @@ export default function HandleProduct(p: CellClassParams) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription className="mb-4">
-              Are you sure you want to delete product <span className="font-bold">{p.data.artikelbezeichnung}</span> from Shopify?
+              Are you sure you want to delete product{" "}
+              <span className="font-bold">{p.data.artikelbezeichnung}</span>{" "}
+              from Shopify?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -127,6 +212,13 @@ export default function HandleProduct(p: CellClassParams) {
                       error: "Something went wrong, please try again",
                     },
                   );
+
+                  p.node.setDataValue("shopify_price", null);
+                  p.api.refreshCells({
+                    rowNodes: [p.node],
+                    columns: ["shopify_price"],
+                    force: true,
+                  });
                 }}
               >
                 Delete product

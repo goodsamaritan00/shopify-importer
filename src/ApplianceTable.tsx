@@ -69,27 +69,27 @@ export default function ApplianceTable({ searchQuery }: any) {
   ]);
 
   return (
-      <AgGridReact
-        rowHeight={60}
-        ref={gridRef}
-        loading={isFetchingEurasAppliances}
-        loadingOverlayComponent={() => {
-          return (
-            <div className="flex flex-col items-center gap-2">
-              <Loader size={30} color="oklch(70.7% 0.165 254.624)" />
-              <small className="text-sm font-semibold text-neutral-500">
-                Getting devices, please wait...
-              </small>
-            </div>
-          );
-        }}
-        rowData={eurasAppliances}
-        columnDefs={colDefs}
-        defaultColDef={defaultColDef}
-        context={{
-          searchQuery,
-          eurasAppliances,
-        }}
-      />
+    <AgGridReact
+      rowHeight={60}
+      ref={gridRef}
+      loading={isFetchingEurasAppliances}
+      loadingOverlayComponent={() => {
+        return (
+          <div className="flex flex-col items-center gap-2">
+            <Loader size={30} color="oklch(70.7% 0.165 254.624)" />
+            <small className="text-sm font-semibold text-neutral-500">
+              Getting devices, please wait...
+            </small>
+          </div>
+        );
+      }}
+      rowData={eurasAppliances}
+      columnDefs={colDefs}
+      defaultColDef={defaultColDef}
+      context={{
+        searchQuery,
+        eurasAppliances,
+      }}
+    />
   );
 }

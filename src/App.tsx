@@ -5,7 +5,7 @@ import importerLogo from "./assets/logo.png";
 
 export default function App() {
   return (
-    <div className="h-screen flex flex-col" >
+    <div className="h-screen flex flex-col">
       <ToastContainer
         position="top-center"
         autoClose={2000}
@@ -23,8 +23,12 @@ export default function App() {
         <NavLink to="/" className="flex items-center gap-2">
           <img className="h-[60px]" src={importerLogo} />
           <div className="uppercase flex  flex-col items-center">
-            <span className="text-xl font-semibold text-neutral-700">Shopify Importer</span>
-            <small className="text-[12px] -mt-2 text-neutral-500 tracking-wider italic ">Dropshipping made easy</small>
+            <span className="text-xl font-semibold text-neutral-700">
+              Shopify Importer
+            </span>
+            <small className="text-[12px] -mt-2 text-neutral-500 tracking-wider italic ">
+              Dropshipping made easy
+            </small>
           </div>
         </NavLink>
         {/* search product by name, sku or oem */}

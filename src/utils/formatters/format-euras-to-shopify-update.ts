@@ -1,7 +1,18 @@
 import type { IEurasProduct } from "../../interfaces/IEuras";
 
-const formatEurasToShopify = (product: IEurasProduct, price?: string) => {
-  const newPart = {
+const formatEurasToShopifyUpdate = (product: IEurasProduct, price?: string) => {
+  const variant: Record<string, any> = {
+    sku: product.artikelnummer,
+    inventory_management: "shopify",
+    inventory_policy: product.bestellbar === "J" ? "continue" : "deny",
+    inventory_quantity: product.bestellbar === "J" ? 1 : 0,
+  };
+
+  if (price && price.trim() !== "") {
+    variant.price = price;
+  }
+
+  return {
     title: product.artikelbezeichnung || "Ohne Titel",
     body_html: `
       <p><strong>Artikelnummer:</strong> ${product.artikelnummer}</p>
@@ -14,16 +25,8 @@ const formatEurasToShopify = (product: IEurasProduct, price?: string) => {
     vendor: "EURAS/ASWO",
     product_type: product.vgruppenname || "Allgemein",
     images: product.picurlbig?.startsWith("http")
-      ? [
-          {
-            src: product.picurlbig,
-          },
-        ]
-      : [
-          {
-            src: "https://i.postimg.cc/Zq5jwGFg/no-photo.jpg",
-          },
-        ],
+      ? [{ src: product.picurlbig }]
+      : [{ src: "https://i.postimg.cc/Zq5jwGFg/no-photo.jpg" }],
     tags: [
       product.artikelnummer,
       product.ersatzartikel,
@@ -32,18 +35,8 @@ const formatEurasToShopify = (product: IEurasProduct, price?: string) => {
     ]
       .filter(Boolean)
       .join(", "),
-    variants: [
-      {
-        sku: product.artikelnummer,
-        price: price ? Number(price).toFixed(2) : product.ekpreis,
-        inventory_management: "shopify",
-        inventory_policy: product.bestellbar === "J" ? "continue" : "deny",
-        inventory_quantity: product.bestellbar === "J" ? 1 : 0,
-      },
-    ],
+    variants: [variant],
   };
-
-  return newPart;
 };
 
-export default formatEurasToShopify;
+export default formatEurasToShopifyUpdate;

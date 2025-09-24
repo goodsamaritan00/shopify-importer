@@ -14,7 +14,6 @@ function compareObjects(obj1: any, obj2: any) {
   const productData1 = {
     product_type: obj1.product_type,
     vendor: obj1.vendor,
-    price: obj1.variants[0].price,
     sku: obj1.variants[0].sku,
     qty: obj1.variants[0].inventory_quantity,
   };
@@ -22,7 +21,6 @@ function compareObjects(obj1: any, obj2: any) {
   const productData2 = {
     product_type: obj2.product_type,
     vendor: obj2.vendor,
-    price: obj2.variants[0].price,
     sku: obj2.variants[0].sku,
     qty: obj2.variants[0].inventory_quantity,
   };

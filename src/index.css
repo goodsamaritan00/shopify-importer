@@ -107,6 +107,16 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .ag-root-wrapper {
 }
 
@@ -144,7 +154,6 @@ body {
 .ag-icon {
   color: oklch(60.999% 0.00007 271.152);
 }
-
 
 .auth-background {
   width: 100vw;

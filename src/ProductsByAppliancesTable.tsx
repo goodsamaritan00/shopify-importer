@@ -29,8 +29,15 @@ import {
   SelectValue,
 } from "./components/ui/select";
 import { Button } from "./components/ui/button";
-import TablePagination from "./components/table-pagination/TablePagination";
 import Loader from "./components/ui/loader";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./components/ui/pagination";
 
 export default function ProductsByAppliancesTable() {
   const location = useLocation();
@@ -40,7 +47,6 @@ export default function ProductsByAppliancesTable() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [productQuery, setProductQuery] = useState<string>("");
   const [category, setCategory] = useState("");
-  const [displayNumber, setDisplayNumber] = useState("40");
   const [siteNumber, setSiteNumber] = useState<string>("1");
   const [id] = useState(deviceId);
 
@@ -65,47 +71,50 @@ export default function ProductsByAppliancesTable() {
   return (
     <div className="ag-theme-material h-full mx-auto flex flex-col  px-8 pb-8 pt-2 text-neutral-500 bg-neutral-50">
       <div className=" my-4 flex items-center gap-2 w-full">
-         <h2 className="text-lg font-semibold text-neutral-700 mr-auto">
-        Results for device: <span className="ml-2">{deviceName}</span>
-      </h2>  
-          <SearchForm
-            searchInput={searchInput}
-            searchQuery={productQuery}
-            setSearchQuery={setProductQuery}
-            setCurrentSite={setSiteNumber}
-            setSearchInput={setSearchInput}
-            setCategory={setCategory}
-          />
+        <h2 className="text-lg font-semibold text-neutral-700 mr-auto">
+          Results for device: <span className="ml-2">{deviceName}</span>
+        </h2>
+        <SearchForm
+          searchInput={searchInput}
+          searchQuery={productQuery}
+          setSearchQuery={setProductQuery}
+          setCurrentSite={setSiteNumber}
+          setSearchInput={setSearchInput}
+          setCategory={setCategory}
+        />
 
-          <Select
-            onValueChange={(value: string) => {
-              setProductQuery("");
-              setCategory(value);
-            }}
-          >
-            <SelectTrigger className="rounded-xl">
-              <SelectValue placeholder="Select Category " />
-            </SelectTrigger>
-            <SelectContent >
-              {eurasApplianceCategories.map((category: any) => {
-                return (
-                  <SelectItem
-                    key={category.vgruppenid}
-                    className=""
-                    value={category.vgruppenid}
-                    onSelect={() => {
-                      setCategory(category.vgruppenid);
-                    }}
-                  >
-                    {category.vgruppenname}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-          <Link to='/'>
-          <Button className="text-sm">Search new device <TbArrowBack className="text-xl" /></Button></Link>
-        </div>
+        <Select
+          onValueChange={(value: string) => {
+            setProductQuery("");
+            setCategory(value);
+          }}
+        >
+          <SelectTrigger className="rounded-xl">
+            <SelectValue placeholder="Select Category " />
+          </SelectTrigger>
+          <SelectContent>
+            {eurasApplianceCategories.map((category: any) => {
+              return (
+                <SelectItem
+                  key={category.vgruppenid}
+                  className=""
+                  value={category.vgruppenid}
+                  onSelect={() => {
+                    setCategory(category.vgruppenid);
+                  }}
+                >
+                  {category.vgruppenname}
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+        <Link to="/">
+          <Button className="text-sm">
+            Search new device <TbArrowBack className="text-xl" />
+          </Button>
+        </Link>
+      </div>
       <PanelGroup direction="vertical">
         <Panel minSize={20}>
           <div className="h-full w-full relative flex-grow min-h-0 overflow-auto">
@@ -142,13 +151,40 @@ export default function ProductsByAppliancesTable() {
           </div>
         </Panel>
       </PanelGroup>
-      <TablePagination
-        displayNumber={displayNumber}
-        setDisplayNumber={setDisplayNumber}
-        setCurrentSite={setSiteNumber}
-        currentSite={siteNumber}
-        total={eurasProductsByAppliances.total}
-      />
+      <div className="bg-white border px-4 text-sm  flex justify-between items-center">
+        <span>
+          Total Reults:{" "}
+          <span className="text-neutral-600 ml-1 font-semibold">
+            {eurasProductsByAppliances?.data?.length}
+          </span>
+        </span>
+
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => {
+                  setSiteNumber((prev) => String(Number(prev) - 1));
+                  console.log(siteNumber);
+                }}
+              />{" "}
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink isActive={true}>{siteNumber}</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => {
+                  setSiteNumber((prev) => String(Number(prev) + 1));
+                  if (eurasProductsByAppliances?.data?.length === 0) {
+                     setSiteNumber((prev) => String(Number(prev) - 1));
+                  }
+                }}
+              />{" "}
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import type {
 import extractProductData from "../utils/extract-euras-product";
 import authHeaders from "./utils/auth-headers";
 
-const BASE_URL: string = "https://importer-be.onrender.com";
+const BASE_URL: string = "http://localhost:5000";
 
 export const fetchEurasProducts = async (
   searchQuery: string,
@@ -87,11 +87,12 @@ export const fetchEurasProductsByAppliances = async (
       params.set("vgruppe", category);
     }
 
-
     const URL: string = `${BASE_URL}/routes/eurasProductsByAppliances?${params.toString().replace(/\+/g, "%")}`;
 
     const res = await fetch(URL, { headers: authHeaders(token) });
     const data = await res.json();
+
+    console.log("PBA", data);
 
     const filterData: IEurasProduct[] = (
       Object.values(data.treffer) as IEurasProduct[]

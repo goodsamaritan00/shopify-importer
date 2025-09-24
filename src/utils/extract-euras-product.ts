@@ -32,6 +32,7 @@ const extractProductData = (item: any) => {
       },
     },
     thumbnailurl: item.thumbnailurl,
+    shopify_price: "",
   };
 };
 

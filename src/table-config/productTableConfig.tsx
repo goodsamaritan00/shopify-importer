@@ -1,4 +1,7 @@
-import type { CellClassParams, ValueFormatterParams } from "ag-grid-community";
+import type {
+  CellClassParams,
+  ValueFormatterParams,
+} from "ag-grid-community";
 
 import ImportSelectedButton from "../components/ag grid/ImportSelectedButton";
 import HandleProduct from "../components/ag grid/HandleProduct";
@@ -7,6 +10,7 @@ import ImportStatus from "../components/ag grid/ImportStatus";
 import UpdateStatus from "../components/ag grid/UpdateStatus";
 
 import noPhoto from "../assets/no-photo.jpg";
+import ShopifyPrice from "../components/ag grid/ShopifyPrice";
 
 export const defaultProductColDefs = {
   flex: 1,
@@ -21,7 +25,7 @@ export const productColDefs = [
     field: "select",
     headerName: "Import",
     headerComponent: ImportSelectedButton,
-    flex: 1.2,
+    flex: 1.4,
     minWidth: 150,
     headerCheckboxSelection: true,
     checkboxSelection: true,
@@ -55,14 +59,14 @@ export const productColDefs = [
   {
     field: "artikelbezeichnung",
     headerName: "Product Name",
-    flex: 2.3,
+    flex: 2,
     minWidth: 150,
     editable: true,
   },
   {
     field: "artikelnummer",
     headerName: "SKU",
-    flex: 0.5,
+    flex: 0.7,
     minWidth: 100,
   },
   {
@@ -85,10 +89,18 @@ export const productColDefs = [
   },
   {
     field: "ekpreis",
-    headerName: "Price",
-    flex: 0.7,
+    headerName: "ASWO Price",
+    flex: 1,
     minWidth: 90,
     valueFormatter: (p: ValueFormatterParams) => p.value + "€",
+  },
+  {
+    field: "shopify_price",
+    headerName: "Shopify Price",
+    flex: 1,
+    minWidth: 90,
+    editable: true,
+    cellRenderer: ShopifyPrice,
   },
   {
     field: "bestellbar",
@@ -98,24 +110,16 @@ export const productColDefs = [
     cellRenderer: AvaliabilityStatus,
   },
   {
-    field: "lieferzeit_in_tagen",
-    headerName: "ETA",
-    flex: 0.6,
-    minWidth: 50,
-    valueFormatter: (p: ValueFormatterParams) =>
-      p.value.toLocaleString() + " days",
-  },
-  {
     field: "import",
     headerName: "Import status",
-    flex: 1.3,
+    flex: 1,
     minWidth: 140,
     cellRenderer: ImportStatus,
   },
   {
     field: "update",
     headerName: "Last Updated",
-    flex: 1.3,
+    flex: 1,
     minWidth: 140,
     cellRenderer: UpdateStatus,
   },

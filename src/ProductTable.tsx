@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import {  useRef, useState } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import { type ValueFormatterParams } from "ag-grid-community";
@@ -34,9 +34,7 @@ export default function ProductTable() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [displayNumber, setDisplayNumber] = useState("40");
   const [currentSite, setCurrentSite] = useState<string>("1");
-  const [tableType, setTableType] = useState<string>(
-    "Products",
-  );
+  const [tableType, setTableType] = useState<string>("Products");
 
   const { user } = useAuthContext();
   const { eurasProducts, isFetchingEurasProducts } = useEurasProducts(
@@ -45,7 +43,7 @@ export default function ProductTable() {
     currentSite,
     user!.token,
   );
-  const { importedProducts } = useImportedProducts(user!.token)
+  const { importedProducts } = useImportedProducts(user!.token);
 
   const gridRef = useRef<AgGridReact>(null);
 
@@ -57,11 +55,11 @@ export default function ProductTable() {
 
   return (
     <div className="ag-theme-material h-full mx-auto flex flex-col pt-2 px-8">
-   
       <div className=" my-4 flex items-center gap-2 w-full">
-   <h2 className="text-xl font-semibold text-neutral-700 mr-auto">
-        Import Products from EURAS Database
-      </h2>        <SearchForm
+        <h2 className="text-xl font-semibold text-neutral-700 mr-auto">
+          Import Products from EURAS Database
+        </h2>
+        <SearchForm
           searchInput={searchInput}
           searchQuery={searchQuery}
           setSearchInput={setSearchInput}
@@ -142,7 +140,7 @@ export default function ProductTable() {
             variants={tableVariants}
             initial="hidden"
             animate="visible"
-            className="h-full mb-8 rounded-xl overflow-hidden  w-full flex flex-col relative flex-grow " 
+            className="h-full mb-8 rounded-xl overflow-hidden  w-full flex flex-col relative flex-grow "
           >
             <ApplianceTable searchQuery={searchQuery} />
           </motion.div>

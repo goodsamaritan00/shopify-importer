@@ -25,6 +25,7 @@ export interface IEurasProduct {
     };
   };
   thumbnailurl: string;
+  shopify_price: string;
 }
 
 export interface IInfoProps {
