@@ -165,7 +165,6 @@ export default function ProductsByAppliancesTable() {
               <PaginationPrevious
                 onClick={() => {
                   setSiteNumber((prev) => String(Number(prev) - 1));
-                  console.log(siteNumber);
                 }}
               />{" "}
             </PaginationItem>

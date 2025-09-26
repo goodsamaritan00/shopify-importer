@@ -126,7 +126,11 @@ export const fetchImportedProducts = async (token: string) => {
       method: "GET",
       headers: AUTH_HEADERS,
     });
+
     const data = await res.json();
-    return data;
-  } catch (error) {}
+    return data.products; // <-- return array directly
+  } catch (error) {
+    console.error("Failed to fetch imported products:", error);
+    return [];
+  }
 };

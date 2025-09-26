@@ -53,6 +53,7 @@ export default function ProductTable() {
     exit: { opacity: 0, y: -30 },
   };
 
+
   return (
     <div className="ag-theme-material h-full mx-auto flex flex-col pt-2 px-8">
       <div className=" my-4 flex items-center gap-2 w-full">

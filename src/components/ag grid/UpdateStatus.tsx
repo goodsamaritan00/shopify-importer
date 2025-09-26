@@ -14,6 +14,8 @@ export default function UpdateStatus(p: RowClassParams) {
 
   const importedProduct = getImportedProducts(p, importedProducts);
 
+  console.log(importedProducts)
+
   return (
     <div className=" w-full h-full flex items-center ">
       {importedProduct ? (

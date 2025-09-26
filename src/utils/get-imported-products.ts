@@ -1,10 +1,10 @@
 const getImportedProducts = (p: any, importedProducts: any) => {
   // Safely handle undefined or null input
-  if (!importedProducts || !Array.isArray(importedProducts.products)) {
+  if (!importedProducts || !Array.isArray(importedProducts)) {
     return null;
   }
 
-  const imported = importedProducts.products.find((product: any) => {
+  const imported = importedProducts.find((product: any) => {
     return product.variants[0].sku === p.data.artikelnummer;
   });
 
