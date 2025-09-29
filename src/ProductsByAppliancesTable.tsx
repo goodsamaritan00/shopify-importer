@@ -93,6 +93,7 @@ export default function ProductsByAppliancesTable() {
             <SelectValue placeholder="Select Category " />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="top">Top Products</SelectItem>
             {eurasApplianceCategories.map((category: any) => {
               return (
                 <SelectItem
@@ -176,7 +177,7 @@ export default function ProductsByAppliancesTable() {
                 onClick={() => {
                   setSiteNumber((prev) => String(Number(prev) + 1));
                   if (eurasProductsByAppliances?.data?.length === 0) {
-                     setSiteNumber((prev) => String(Number(prev) - 1));
+                    setSiteNumber((prev) => String(Number(prev) - 1));
                   }
                 }}
               />{" "}

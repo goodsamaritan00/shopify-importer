@@ -32,7 +32,15 @@ import { IoAddCircle } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
 import { Input } from "../ui/input";
-import {  useState } from "react";
+import { useState } from "react";
+import { IoMdCloseCircle } from "react-icons/io";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { SelectItem } from "@radix-ui/react-select";
 
 export default function HandleProduct(p: CellClassParams) {
   const { user } = useAuthContext();
@@ -42,6 +50,8 @@ export default function HandleProduct(p: CellClassParams) {
   }
 
   const [priceValue, setPriceValue] = useState<string>("");
+  const [pricePrecentage, setPricePrecentage] = useState<string>("10");
+  const [customPricePrecentage, setCustomPricePrecentage] = useState<string>("")
 
   const { importedProducts } = useImportedProducts(user.token);
   const { importProducts, isImporting } = useShopifyImport();
@@ -54,9 +64,14 @@ export default function HandleProduct(p: CellClassParams) {
   const handleChange = (e: any) => {
     const val = e.target.value;
     if (/^\d*\.?\d{0,2}$/.test(val)) {
+
       setPriceValue(val);
     }
   };
+
+  const precentages: string[] = Array.from({ length: 10 }, (_, i) =>
+    String((i + 1) * 10),
+  );
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -134,44 +149,97 @@ export default function HandleProduct(p: CellClassParams) {
             <IoAddCircle className="size-6 text-blue-400" />
           </AlertDialogTrigger>
         </Button>
-        <AlertDialogContent className="border- border-blue-400">
+        <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-lg">
               Edit Shopify product price
             </AlertDialogTitle>
-            <AlertDialogDescription className="mb-4">
-              Edit price for product{" "}
-              <span className="font-bold">
-                {p.data.artikelbezeichnung}
+            <AlertDialogDescription className="flex flex-col gap-1">
+              <span>
+                Edit price for product{" "}
+                <span className="font-semibold">
+                  {p.data.artikelbezeichnung} {p.data.artikelnummer}
+                </span>
               </span>{" "}
+              <span>
+                Original price:{" "}
+                <span className="font-semibold">{p.data.ekpreis + "€"}</span>
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <div className="flex">
+          <AlertDialogFooter className="">
+            <div className="flex items-center mr-auto gap-2">
               <Input
                 onChange={handleChange}
                 value={priceValue}
                 placeholder="0.00"
                 type="text"
-                className="border-neutral-300 rounded-md focus:border-neutral-400"
+                className="border-neutral-300  max-w-[100px] rounded-md focus:border-neutral-400"
               />
-              <AlertDialogAction className="bg-transparent border-none">
-                <Button
-                  onClick={() => {
-                    p.node.setDataValue("shopify_price", priceValue);
-                    p.api.refreshCells({
-                      rowNodes: [p.node],
-                      columns: ["shopify_price"],
-                      force: true,
-                    });
-                  }}
-                >
-                  Add
-                </Button>
+              <Select
+                defaultValue={String(pricePrecentage)}
+                onValueChange={(value: string) => {
+                  setPricePrecentage(value);
+                  const precentage = parseFloat(value);
+                  const aswoPrice = parseFloat(p.data.ekpreis);
+
+                  const newPrice = aswoPrice + aswoPrice * (precentage / 100);
+
+                  setPriceValue(newPrice.toFixed(2).toString());
+                }}
+                value={String(pricePrecentage)}
+              >
+                <SelectTrigger size="medium" className="rounded-md shadow-none">
+                  <SelectValue>{pricePrecentage + "%"}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {precentages.map((num) => (
+                    <SelectItem
+                      className="cursor-pointer"
+                      key={num}
+                      value={num.toString()}
+                    >
+                      {num + "%"}
+                    </SelectItem>
+                  ))}
+                  <div className="flex items-center gap-2">
+                    <Input onChange={(e) => setCustomPricePrecentage(e.target.value)} placeholder="e.g. 150%" className="border border-neutral-300 focus:border-neutral-400 rounded-md" />
+                    <SelectItem value={customPricePrecentage || 'test'}>
+                      <Button className="rounded-md" size='sm'>Add</Button>
+                    </SelectItem>
+                  </div>
+                </SelectContent>
+              </Select>
+              <AlertDialogAction
+                onClick={() => {
+                  p.node.setDataValue("shopify_price", priceValue);
+                  p.api.refreshCells({
+                    rowNodes: [p.node],
+                    columns: ["shopify_price"],
+                    force: true,
+                  });
+                }}
+                className="border-none rounded-md h-[32px]"
+              >
+                Add
               </AlertDialogAction>
+              <Button
+                onClick={() => {
+                  p.node.setDataValue("shopify_price", null);
+                  p.api.refreshCells({
+                    rowNodes: [p.node],
+                    columns: ["shopify_price"],
+                    force: true,
+                  });
+                  setPriceValue("0.00")
+                }}
+                className="border-none rounded-md h-[32px]"
+              >
+                Clear
+              </Button>
             </div>
-            <AlertDialogCancel className="bg-blue-400 px-4 mr-auto -ml-4 hover:bg-blue-400 rounded-full hover:text-white text-white h-full text-sm ">
-              Cancel
+            <AlertDialogCancel className="border-none hover:bg-transparent text-blue-400 hover:text-blue-300 absolute top-0 right-0 shadow-none -ml-4">
+              <IoMdCloseCircle />
             </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -194,7 +262,7 @@ export default function HandleProduct(p: CellClassParams) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-blue-400 px-4 -mr-4 hover:bg-blue-400 rounded-full hover:text-white text-white h-full text-sm ">
-              Cancel
+              <IoMdCloseCircle />
             </AlertDialogCancel>
             <AlertDialogAction className="bg-transparent border-none">
               <Button

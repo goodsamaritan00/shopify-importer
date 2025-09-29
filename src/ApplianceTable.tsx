@@ -68,8 +68,6 @@ export default function ApplianceTable({ searchQuery }: any) {
     },
   ]);
 
-
-
   return (
     <AgGridReact
       rowHeight={60}

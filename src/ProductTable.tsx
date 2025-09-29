@@ -1,4 +1,4 @@
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import { type ValueFormatterParams } from "ag-grid-community";
@@ -52,7 +52,6 @@ export default function ProductTable() {
     visible: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -30 },
   };
-
 
   return (
     <div className="ag-theme-material h-full mx-auto flex flex-col pt-2 px-8">

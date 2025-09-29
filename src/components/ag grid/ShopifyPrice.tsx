@@ -3,7 +3,6 @@ import { useImportedProducts } from "../../hooks/useShopify";
 import useAuthContext from "../../hooks/useAuthContext";
 import getImportedProducts from "../../utils/get-imported-products";
 
-
 export default function ShopifyPrice(p: CellClassParams) {
   const { user } = useAuthContext();
   const { importedProducts } = useImportedProducts(user!.token);
@@ -14,7 +13,7 @@ export default function ShopifyPrice(p: CellClassParams) {
 
   // if user manually set price but product not yet imported
   if (editedPrice && !importedProduct && editedPrice !== "0.00") {
-    return <span className="text-orange-300">{editedPrice}€</span>;
+    return <span className="text-orange-300">{parseFloat(editedPrice).toFixed(2)}€</span>;
   }
 
   // if nothing set yet

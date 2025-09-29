@@ -37,6 +37,7 @@ export function useEurasProducts(
       return fetchEurasProducts(searchQuery, displayNumber, siteNumber, token);
     },
     enabled: !!searchQuery,
+    refetchOnWindowFocus: false
   });
 
   return {

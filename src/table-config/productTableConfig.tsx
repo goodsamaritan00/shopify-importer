@@ -1,7 +1,4 @@
-import type {
-  CellClassParams,
-  ValueFormatterParams,
-} from "ag-grid-community";
+import type { CellClassParams, ValueFormatterParams } from "ag-grid-community";
 
 import ImportSelectedButton from "../components/ag grid/ImportSelectedButton";
 import HandleProduct from "../components/ag grid/HandleProduct";
